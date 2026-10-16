@@ -29,8 +29,14 @@ export function field(id: string): Field {
   return f;
 }
 
-/** "Computer Science › Programming Languages", or just the label for a top-level field. */
-export function fieldPath(id: string): string {
-  const f = field(id);
-  return f.root === f.id ? f.label : `${field(f.root).label} › ${f.label}`;
+/** Groups field ids under their top-level field, in order of first appearance. */
+export function groupFields(ids: string[]): { root: Field; children: Field[] }[] {
+  const groups = new Map<string, Field[]>();
+  for (const id of ids) {
+    const f = field(id);
+    const children = groups.get(f.root) ?? [];
+    if (f.id !== f.root) children.push(f);
+    groups.set(f.root, children);
+  }
+  return [...groups].map(([root, children]) => ({ root: field(root), children }));
 }

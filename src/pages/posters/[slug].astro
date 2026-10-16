@@ -11,7 +11,7 @@ import {
   thumbSrcset,
   type Poster,
 } from "../../lib/posters";
-import { fieldPath } from "../../lib/taxonomy";
+import { groupFields } from "../../lib/taxonomy";
 import { url } from "../../site";
 
 export async function getStaticPaths() {
@@ -59,10 +59,17 @@ const hasDetails = Boolean(p.conference || p.year || p.tags || p.paper || p.doi)
           {
             p.fields && (
               <p class="eyebrow">
-                {p.fields.map((id, i) => (
+                {groupFields(p.fields).map(({ root, children }, i) => (
                   <>
-                    <a href={url(`?field=${encodeURIComponent(id)}`)}>{fieldPath(id)}</a>
-                    {i < p.fields!.length - 1 && " · "}
+                    {i > 0 && " · "}
+                    <a href={url(`?field=${encodeURIComponent(root.id)}`)}>{root.label}</a>
+                    {children.length > 0 && " › "}
+                    {children.map((c, j) => (
+                      <>
+                        {j > 0 && ", "}
+                        <a href={url(`?field=${encodeURIComponent(c.id)}`)}>{c.label}</a>
+                      </>
+                    ))}
                   </>
                 ))}
               </p>
