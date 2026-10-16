@@ -43,7 +43,7 @@ authors:                     # in the order on the poster
   - Daniel Okafor            # a name alone works too
 
 fields:                      # ids from taxonomy.yml
-  - CS/ProgrammingLanguages
+  - CS/SoftwareAndItsEngineering
 
 tags:                        # free keywords, lowercase
   - type inference
@@ -76,7 +76,7 @@ Reuse existing spellings where you can. For example:
 
 | Field | Tags |
 |---|---|
-| `CS/ProgrammingLanguages` | `type inference`, `Rust`, `compilers` |
+| `CS/SoftwareAndItsEngineering` | `programming languages`, `type inference`, `compilers` |
 | `Biology/Genetics` | `CRISPR`, `single-cell RNA-seq`, `Arabidopsis thaliana` |
 | `Chemistry` | `catalysis`, `perovskites`, `NMR spectroscopy` |
 | `Physics` | `quantum optics`, `Monte Carlo simulation` |

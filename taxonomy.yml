@@ -1,24 +1,28 @@
 # Research fields a poster can be filed under.
 #
 # A poster refers to a field by its id: either a top-level key ("Biology")
-# or a key and one of its subfields ("CS/ProgrammingLanguages").
+# or a key and one of its subfields ("CS/SoftwareAndItsEngineering").
 # To add a field, add it here in the same pull request as the poster.
 # Ids use PascalCase with no spaces; `label` is what the site shows.
 
+# Subfields are the top-level classes of the ACM Computing Classification System (2012),
+# https://dl.acm.org/ccs. Finer ACM concepts, like "programming languages", go in tags.
 CS:
   label: Computer Science
   subfields:
-    ProgrammingLanguages: Programming Languages
-    FormalVerification: Formal Verification
-    SoftwareEngineering: Software Engineering
-    Systems: Systems
-    Security: Security
-    MachineLearning: Machine Learning
-    Databases: Databases
+    GeneralAndReference: General and reference
+    Hardware: Hardware
+    ComputerSystemsOrganization: Computer systems organization
     Networks: Networks
-    HCI: Human–Computer Interaction
-    Graphics: Graphics
-    Theory: Theory
+    SoftwareAndItsEngineering: Software and its engineering
+    TheoryOfComputation: Theory of computation
+    MathematicsOfComputing: Mathematics of computing
+    InformationSystems: Information systems
+    SecurityAndPrivacy: Security and privacy
+    HumanCenteredComputing: Human-centered computing
+    ComputingMethodologies: Computing methodologies
+    AppliedComputing: Applied computing
+    SocialAndProfessionalTopics: Social and professional topics
 
 Mathematics:
   label: Mathematics
