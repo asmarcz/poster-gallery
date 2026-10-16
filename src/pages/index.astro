@@ -285,8 +285,10 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
     pointer-events: none;
   }
 
+  /* The label keeps the search on its own row; the input itself stays a readable width. */
   .search input {
     width: 100%;
+    max-width: 30rem;
     padding: 0 0.75rem 0 2.375rem;
   }
 
