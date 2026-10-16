@@ -1,0 +1,49 @@
+title: "Interactive Typing Toolkit: The Types You Want"
+
+authors:
+  - name: Oliver Tušla
+    affiliation: Czech Technical University in Prague
+    orcid: 0009-0003-5459-5820
+  - name: Mickaël Laurent
+    affiliation: Charles University
+    orcid: 0000-0003-1590-2392
+  - name: Pierre Donat-Bouillud
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0003-4455-1130
+
+fields:
+  - CS/ACMCCS/TheoryOfComputation/SemanticsAndReasoning/ProgramConstructs/TypeStructures
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/GeneralProgrammingLanguages/LanguageFeatures/Polymorphism
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/DevelopmentFrameworksAndEnvironments/IntegratedAndVisualDevelopmentEnvironments
+  - CS/arXiv/cs.PL
+
+tags:
+  - set-theoretic types
+  - semantic subtyping
+  - type inference
+  - dynamic languages
+  - IDE tooling
+
+conference:
+  name: ECOOP 2026
+  location: Brussels, Belgium
+
+year: 2026
+
+abstract: |
+  Set-theoretic type systems infer precise polymorphic types for unannotated functions in
+  dynamic languages, capturing overloaded behaviour through intersections, unions, and
+  negations of types. The price of this precision is readability: inferred signatures are
+  often far more verbose than the type a programmer would write by hand. Worse, an overly
+  precise signature propagates through inference into every definition that uses it, so
+  simplifying one signature can yield more straightforward types across the entire codebase.
+  We present an interactive typing toolkit, a VS Code extension backed by an LSP server on top
+  of the MLsem typing library, that lets the programmer reshape an inferred type through
+  simple, semantically justified operations such as instantiation of type variables and
+  merging of overloads, exploring the spectrum of correct types for a function and choosing
+  where on the precision–readability scale to stop. Readability is not the only concern: a
+  narrower contract than the code happens to admit can also capture intent. We outline the
+  toolkit's design and our plans to apply it to the R language.
+
+doi: 10.1145/3849733.3849786
+repository: https://github.com/asmarcz/MLsem-vscode
