@@ -1,0 +1,135 @@
+---
+import { authorsShort, thumbSrc, thumbSrcset, venueLine, type Poster } from "../lib/posters";
+import { field } from "../lib/taxonomy";
+import { url } from "../site";
+
+interface Props {
+  poster: Poster;
+}
+
+const { poster: p } = Astro.props;
+
+// Each subfield also matches its parent, so filtering by "CS" finds "CS/Systems".
+const fieldIds = [...new Set((p.fields ?? []).flatMap((id) => [id, field(id).root]))];
+const searchText = [
+  p.title,
+  ...(p.authors ?? []).flatMap((a) => [a.name, a.affiliation]),
+  p.conference?.name,
+  p.abstract,
+  ...(p.tags ?? []),
+]
+  .filter(Boolean)
+  .join(" ")
+  .toLowerCase();
+const authors = authorsShort(p);
+const venue = venueLine(p);
+---
+
+<li
+  class="card"
+  data-search={searchText}
+  data-fields={fieldIds.join(" ")}
+  data-venue={p.conference?.name ?? ""}
+  data-year={p.year ?? ""}
+  data-tags={JSON.stringify(p.tags ?? [])}
+>
+  <a href={url(`posters/${p.slug}/`)}>
+    <div class="frame">
+      <img
+        class="poster-image"
+        src={thumbSrc(p, 480)}
+        srcset={thumbSrcset(p)}
+        sizes="(min-width: 76rem) 17rem, (min-width: 40rem) 30vw, 50vw"
+        width={p.asset.width}
+        height={p.asset.height}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <h2 class="title">{p.title}</h2>
+  </a>
+  {authors && <p class="authors">{authors}</p>}
+  {venue && <p class="venue">{venue}</p>}
+</li>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .card[hidden] {
+    display: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Portrait A-series frame; landscape posters sit centred inside it. */
+  .frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1.3;
+    /* Without this a tall image stretches the frame past its aspect ratio. */
+    min-height: 0;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .frame img {
+    max-height: 100%;
+    min-width: 0;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: var(--shadow-rest);
+    transition-property: box-shadow, translate;
+    transition-duration: 200ms;
+    transition-timing-function: var(--ease);
+  }
+
+  a:hover .frame img {
+    box-shadow: var(--shadow-raised);
+    translate: 0 -2px;
+  }
+
+  .title {
+    margin-top: 0.875rem;
+    font-size: var(--text-lg);
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+
+  a:hover .title {
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.15em;
+  }
+
+  .authors,
+  .venue {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .authors {
+    margin-top: 0.35rem;
+  }
+
+  .venue {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

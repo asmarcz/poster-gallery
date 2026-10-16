@@ -1,0 +1,348 @@
+---
+import Icon from "../components/Icon.astro";
+import PosterCard from "../components/PosterCard.astro";
+import Base from "../layouts/Base.astro";
+import { getPosters } from "../lib/posters";
+import { field, fields } from "../lib/taxonomy";
+import { contributingUrl } from "../site";
+
+const posters = await getPosters();
+
+// Only offer filter values that at least one poster uses.
+const usedFields = new Set(posters.flatMap((p) => (p.fields ?? []).flatMap((id) => [id, field(id).root])));
+const fieldGroups = fields
+  .filter((f) => f.root === f.id && usedFields.has(f.id))
+  .map((root) => ({ root, children: fields.filter((f) => f.root === root.id && f.id !== root.id && usedFields.has(f.id)) }));
+const venues = [...new Set(posters.flatMap((p) => p.conference?.name ?? []))].sort((a, b) => a.localeCompare(b));
+const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => b - a);
+---
+
+<Base>
+  <div class="page">
+    <section class="intro">
+      <h1>Academic posters</h1>
+      <p>Browse posters by field, venue and year. Every poster opens as a PDF, many with their source.</p>
+    </section>
+
+    {
+      posters.length === 0 ? (
+        <section class="empty">
+          <h2>No posters yet</h2>
+          <p>
+            Be the first: <a href={contributingUrl}>submit a poster</a>.
+          </p>
+        </section>
+      ) : (
+        <>
+          <form class="filters" role="search" id="filters">
+            <label class="search">
+              <span class="visually-hidden">Search posters</span>
+              <Icon name="search" />
+              <input type="search" name="q" placeholder="Search titles, authors, abstracts" autocomplete="off" />
+            </label>
+            {fieldGroups.length > 0 && (
+              <label>
+                <span class="visually-hidden">Field</span>
+                <select name="field">
+                  <option value="">All fields</option>
+                  {fieldGroups.map(({ root, children }) =>
+                    children.length === 0 ? (
+                      <option value={root.id}>{root.label}</option>
+                    ) : (
+                      <optgroup label={root.label}>
+                        <option value={root.id}>All {root.label}</option>
+                        {children.map((c) => (
+                          <option value={c.id}>{c.label}</option>
+                        ))}
+                      </optgroup>
+                    ),
+                  )}
+                </select>
+              </label>
+            )}
+            {venues.length > 0 && (
+              <label>
+                <span class="visually-hidden">Venue</span>
+                <select name="venue">
+                  <option value="">All venues</option>
+                  {venues.map((v) => (
+                    <option value={v}>{v}</option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {years.length > 0 && (
+              <label>
+                <span class="visually-hidden">Year</span>
+                <select name="year">
+                  <option value="">All years</option>
+                  {years.map((y) => (
+                    <option value={y}>{y}</option>
+                  ))}
+                </select>
+              </label>
+            )}
+            <input type="hidden" name="tag" />
+          </form>
+
+          <div class="status">
+            <p aria-live="polite" id="count">
+              {posters.length} {posters.length === 1 ? "poster" : "posters"}
+            </p>
+            <button type="button" class="tag-chip" id="tag-chip" hidden>
+              <span />
+              <Icon name="x" size={14} />
+              <span class="visually-hidden">Remove tag filter</span>
+            </button>
+            <button type="button" class="clear" id="clear" hidden>
+              Clear filters
+            </button>
+          </div>
+
+          <ul class="grid" id="grid">
+            {posters.map((p) => (
+              <PosterCard poster={p} />
+            ))}
+          </ul>
+
+          <section class="empty" id="no-results" hidden>
+            <h2>No posters match these filters</h2>
+            <p>Try a broader search, or clear the filters.</p>
+          </section>
+        </>
+      )
+    }
+  </div>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#filters");
+  if (form) {
+    const cards = [...document.querySelectorAll<HTMLElement>("#grid > li")];
+    const count = document.querySelector("#count")!;
+    const clear = document.querySelector<HTMLButtonElement>("#clear")!;
+    const tagChip = document.querySelector<HTMLButtonElement>("#tag-chip")!;
+    const noResults = document.querySelector<HTMLElement>("#no-results")!;
+    const tagInput = form.elements.namedItem("tag") as HTMLInputElement;
+    const names = ["q", "field", "venue", "year", "tag"] as const;
+
+    const control = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+
+    // Start from the URL so filtered views can be shared and survive reloads.
+    const params = new URLSearchParams(location.search);
+    for (const name of names) {
+      const el = control(name);
+      const value = params.get(name);
+      if (el && value) el.value = value;
+    }
+
+    function apply() {
+      const value = (name: string) => control(name)?.value.trim() ?? "";
+      const words = value("q").toLowerCase().split(/\s+/).filter(Boolean);
+      const fieldId = value("field");
+      const venue = value("venue");
+      const year = value("year");
+      const tag = value("tag");
+
+      let shown = 0;
+      for (const card of cards) {
+        const d = card.dataset;
+        const match =
+          words.every((w) => d.search!.includes(w)) &&
+          (!fieldId || d.fields!.split(" ").includes(fieldId)) &&
+          (!venue || d.venue === venue) &&
+          (!year || d.year === year) &&
+          (!tag || (JSON.parse(d.tags!) as string[]).includes(tag));
+        card.hidden = !match;
+        if (match) shown++;
+      }
+
+      count.textContent = `${shown} ${shown === 1 ? "poster" : "posters"}`;
+      noResults.hidden = shown > 0;
+      clear.hidden = !names.some((n) => value(n));
+      tagChip.hidden = !tag;
+      tagChip.querySelector("span")!.textContent = `Tag: ${tag}`;
+
+      const next = new URLSearchParams();
+      for (const n of names) if (value(n)) next.set(n, value(n));
+      const query = next.toString();
+      history.replaceState(null, "", query ? `?${query}` : location.pathname);
+    }
+
+    form.addEventListener("input", apply);
+    form.addEventListener("submit", (e) => e.preventDefault());
+    tagChip.addEventListener("click", () => {
+      tagInput.value = "";
+      apply();
+    });
+    clear.addEventListener("click", () => {
+      form.reset();
+      tagInput.value = "";
+      apply();
+    });
+    apply();
+  }
+</script>
+
+<style>
+  .intro {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) 2rem;
+    max-width: 40rem;
+  }
+
+  .intro h1 {
+    font-size: var(--text-display);
+    letter-spacing: -0.02em;
+  }
+
+  .intro p {
+    margin-top: 0.75rem;
+    color: var(--muted);
+    font-size: var(--text-lg);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  .filters input,
+  .filters select {
+    min-height: 2.5rem;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background-color: var(--bg);
+    box-shadow: var(--control-shadow);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .filters input,
+    .filters select {
+      font-size: var(--text-sm);
+    }
+  }
+
+  .filters select {
+    max-width: 100%;
+    padding: 0 2rem 0 0.75rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    cursor: pointer;
+  }
+
+  .filters label {
+    display: flex;
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+
+  .filters select {
+    flex: 1;
+  }
+
+  @media (min-width: 48rem) {
+    .filters label:not(.search) {
+      flex: none;
+    }
+  }
+
+  .search {
+    position: relative;
+    flex: 1 1 18rem;
+    color: var(--muted);
+  }
+
+  .search :global(svg) {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    translate: 0 -50%;
+    pointer-events: none;
+  }
+
+  .search input {
+    width: 100%;
+    padding: 0 0.75rem 0 2.375rem;
+  }
+
+  .search input::placeholder {
+    color: var(--muted);
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    min-height: 2rem;
+    margin-block: 1.25rem 1.75rem;
+    color: var(--muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status button {
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .status button[hidden] {
+    display: none;
+  }
+
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 1.75rem;
+    padding: 0 0.625rem;
+    border-radius: 999px;
+    background: var(--surface) !important;
+    color: var(--text) !important;
+  }
+
+  .clear:hover {
+    text-decoration: underline;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 42vw), 1fr));
+    gap: 2.75rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 30rem) {
+    .grid {
+      gap: 2rem 1rem;
+    }
+  }
+
+  .empty {
+    padding-block: 3rem;
+  }
+
+  .empty[hidden] {
+    display: none;
+  }
+
+  .empty h2 {
+    font-size: var(--text-xl);
+  }
+
+  .empty p {
+    margin-top: 0.5rem;
+    color: var(--muted);
+  }
+</style>
