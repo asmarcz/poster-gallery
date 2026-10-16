@@ -101,22 +101,29 @@ Fields come from [taxonomy.yml](taxonomy.yml): a top-level id like `Biology` or 
 like `Biology/Ecology`. Pick the most specific one. If none fits, add it to `taxonomy.yml` in
 the same pull request.
 
-Some fields also use established classification schemes, listed under `schemes:` in
+Fields also use established classification schemes, listed under `schemes:` in
 `taxonomy.yml`, with their entries in [taxonomy/](taxonomy/). An id from a scheme is the
-field, the scheme and the entry's path. For Computer Science:
+field, the scheme and the entry's path:
 
-- [ACM CCS](https://dl.acm.org/ccs), in [taxonomy/acm-ccs.yml](taxonomy/acm-ccs.yml):
+- Every field has the Springer Nature subjects of its disciplines, e.g.
+  `Biology/SpringerLifeSciences/Ecology/LandscapeEcology`. If the paper was published by
+  Springer, use the subjects listed on its SpringerLink page.
+- Computer Science also has [ACM CCS](https://dl.acm.org/ccs), in
+  [taxonomy/acm-ccs.yml](taxonomy/acm-ccs.yml):
   `CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/Compilers/JustInTimeCompilers`.
   If the paper has CCS concepts (`\ccsdesc{Software and its engineering~Just-in-time
   compilers}` in the ACM LaTeX template), use those.
-- [arXiv](https://arxiv.org/category_taxonomy), in
+- Computer Science also has [arXiv](https://arxiv.org/category_taxonomy), in
   [taxonomy/arxiv-cs.yml](taxonomy/arxiv-cs.yml): `CS/arXiv/cs.PL`. If there is an arXiv
   preprint, use its categories.
 
 Pick the most specific entries that fit; several fields, from several schemes, are fine.
 
 Agents: take the metadata from the PDF, and ask the author for anything it doesn't show
-(conference, year, source, repository) rather than guessing.
+(conference, year, source, repository) rather than guessing. You may look up missing
+details online, such as the DOI, the conference's full name and URL, or ORCID iDs, but say so
+explicitly: tell the author, and list every value you found online, with where you found
+it, in the pull request description.
 
 ## Check and submit
 

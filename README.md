@@ -28,6 +28,10 @@ and extended abstract.
 Pull requests are checked by CI and reviewed by hand ([REVIEWING.md](REVIEWING.md)).
 Merging to `main` publishes the site on GitHub Pages.
 
+Research fields follow the ACM Computing Classification System, arXiv's categories and
+Springer Nature's subjects (Product Market Codes, Springer Nature SciGraph, CC BY-NC 4.0),
+generated into `taxonomy/` by the scripts in `scripts/`.
+
 To run it locally you need Node.js 22+ and `pdftoppm`:
 
 ```sh

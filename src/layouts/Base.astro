@@ -43,6 +43,12 @@ const fullTitle = title ? `${title} · ${site.title}` : site.title;
       <div class="page bar">
         <p>Posters are © their authors.</p>
         <a href={site.repoUrl}>Source on GitHub</a>
+        <p class="credits">
+          Fields follow the <a href="https://dl.acm.org/ccs">ACM CCS</a>,
+          <a href="https://arxiv.org/category_taxonomy">arXiv categories</a> and Springer Nature subjects
+          (<a href="https://doi.org/10.6084/m9.figshare.7376447">SciGraph</a>,
+          <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>).
+        </p>
       </div>
     </footer>
   </body>
@@ -100,5 +106,10 @@ const fullTitle = title ? `${title} · ${site.title}` : site.title;
 
   .site-footer a {
     color: inherit;
+  }
+
+  .credits {
+    flex-basis: 100%;
+    font-size: var(--text-xs);
   }
 </style>

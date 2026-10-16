@@ -17,6 +17,8 @@ and merging to a maintainer.
 - ORCID iDs belong to the named authors (open the link).
 - `thesis`, if set, has the right level for the degree, and its link leads to that thesis.
 - Links and the DOI resolve to what they claim.
+- Every value the PR description says was looked up online is checked against its source
+  with extra care; values that look looked up but are not declared are asked about.
 
 ## Tags and fields
 
@@ -27,8 +29,8 @@ Tags are free text, so they need a careful look, or the filters fill with near-d
   `grep -rh -A20 "^tags:" posters/*/poster.yml`.
 - Tags don't repeat the field.
 - `fields` uses the most specific fitting id.
-- ACM CCS fields match the paper's CCS concepts, and arXiv fields the preprint's
-  categories, if there are any.
+- ACM CCS fields match the paper's CCS concepts, arXiv fields the preprint's categories, and
+  Springer fields the SpringerLink subjects, if there are any.
 - A new entry in `taxonomy.yml` is really missing, sits under the right parent, has a
   PascalCase id and a spelled-out label.
 

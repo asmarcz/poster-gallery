@@ -8,4 +8,6 @@ Poster: `posters/<slug>/`
 - [ ] `poster-source/` and `abstract-source/`, if included, are the sources of these PDFs
 - [ ] All authors agree to publishing it
 
+Metadata looked up online (value and source), if any:
+
 <!-- New field in taxonomy.yml, or anything else a reviewer should know: -->
