@@ -27,7 +27,8 @@ Tags are free text, so they need a careful look, or the filters fill with near-d
   `grep -rh -A20 "^tags:" posters/*/poster.yml`.
 - Tags don't repeat the field.
 - `fields` uses the most specific fitting id.
-- ACM CCS fields match the paper's CCS concepts if it has them.
+- ACM CCS fields match the paper's CCS concepts, and arXiv fields the preprint's
+  categories, if there are any.
 - A new entry in `taxonomy.yml` is really missing, sits under the right parent, has a
   PascalCase id and a spelled-out label.
 

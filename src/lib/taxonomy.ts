@@ -2,33 +2,34 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse } from "yaml";
 
-type RawTaxonomy = Record<string, { label: string; subfields?: Record<string, string> }>;
-/** ACM CCS concept path ("ACMCCS/SoftwareAndItsEngineering/…") to its name. */
-type RawAcmCcs = Record<string, string>;
+interface RawField {
+  label: string;
+  subfields?: Record<string, string>;
+  schemes?: Record<string, { label: string; file: string }>;
+}
+
+export interface Scheme {
+  /** Id prefix of the scheme's fields, e.g. "CS/ACMCCS". */
+  id: string;
+  label: string;
+}
 
 export interface Field {
   id: string;
   label: string;
   /** Top-level field id; equal to `id` for a top-level field. */
   root: string;
-  /** Ids of the broader fields this one also counts as: its ancestors in the ACM CCS tree. */
+  /** Ids of the broader fields this one also counts as: its ancestors within its scheme. */
   broader: string[];
-}
-
-/** The field's own name, without the ACM class in front ("Just-in-time compilers"). */
-export function shortName(f: Field): string {
-  return f.label.split(" → ").at(-1)!;
+  /** The classification scheme the field comes from, if any. */
+  scheme?: Scheme;
 }
 
 // Resolved from the project root: this module is bundled, so its own location moves.
 const read = (file: string) => parse(readFileSync(join(process.cwd(), file), "utf8"));
-const raw: RawTaxonomy = read("taxonomy.yml");
-const acmCcs: RawAcmCcs = read("acm-ccs.yml");
+const raw: Record<string, RawField> = read("taxonomy.yml");
 
-/** The field whose subfields also include every ACM CCS concept. */
-const ACM_ROOT = "CS";
-
-export const fields: Field[] = Object.entries(raw).flatMap(([root, { label, subfields }]) => [
+export const fields: Field[] = Object.entries(raw).flatMap(([root, { label, subfields, schemes }]) => [
   { id: root, label, root, broader: [] },
   ...Object.entries(subfields ?? {}).map(([sub, subLabel]) => ({
     id: `${root}/${sub}`,
@@ -36,20 +37,24 @@ export const fields: Field[] = Object.entries(raw).flatMap(([root, { label, subf
     root,
     broader: [],
   })),
-  ...(root === ACM_ROOT ? Object.entries(acmCcs).map(([path, name]) => acmField(root, path, name)) : []),
+  ...Object.entries(schemes ?? {}).flatMap(([key, { label: schemeLabel, file }]) => {
+    const scheme = { id: `${root}/${key}`, label: schemeLabel };
+    const entries: Record<string, string> = read(file);
+    return Object.entries(entries).map(([path, name]) => schemeField(root, scheme, entries, path, name));
+  }),
 ]);
 
-function acmField(root: string, path: string, name: string): Field {
+function schemeField(root: string, scheme: Scheme, entries: Record<string, string>, path: string, name: string): Field {
   const steps = path.split("/");
-  // Every prefix below "ACMCCS" itself is an ancestor: ACMCCS/A, ACMCCS/A/B, …
-  const ancestors = steps.slice(2).map((_, i) => steps.slice(0, i + 2).join("/"));
-  const topClass = ancestors[0];
+  const ancestors = steps.slice(0, -1).map((_, i) => steps.slice(0, i + 1).join("/"));
   return {
-    id: `${root}/${path}`,
-    // Named like the ACM templates do: "Software and its engineering → Just-in-time compilers".
-    label: topClass ? `${acmCcs[topClass]} → ${name}` : name,
+    id: `${scheme.id}/${path}`,
+    // Deeper entries name their top-level class first, as the ACM templates do:
+    // "Software and its engineering → Just-in-time compilers".
+    label: ancestors.length ? `${entries[ancestors[0]]} → ${name}` : name,
     root,
-    broader: ancestors.map((a) => `${root}/${a}`),
+    broader: ancestors.map((a) => `${scheme.id}/${a}`),
+    scheme,
   };
 }
 
@@ -61,6 +66,11 @@ export function field(id: string): Field {
   const f = byId.get(id);
   if (!f) throw new Error(`Unknown field "${id}"`);
   return f;
+}
+
+/** The field's own name, without its top-level class in front ("Just-in-time compilers"). */
+export function shortName(f: Field): string {
+  return f.label.split(" → ").at(-1)!;
 }
 
 /** Every field id a poster filed under `id` should be found by: itself, its broader fields and its root. */

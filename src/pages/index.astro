@@ -3,7 +3,7 @@ import Icon from "../components/Icon.astro";
 import PosterCard from "../components/PosterCard.astro";
 import Base from "../layouts/Base.astro";
 import { getPosters } from "../lib/posters";
-import { fields, matchingFields, shortName } from "../lib/taxonomy";
+import { fields, matchingFields, shortName, type Field } from "../lib/taxonomy";
 import { thesisLevels, type ThesisLevel } from "../lib/thesis";
 import { contributingUrl } from "../site";
 
@@ -11,9 +11,19 @@ const posters = await getPosters();
 
 // Only offer filter values that at least one poster uses.
 const usedFields = new Set(posters.flatMap((p) => (p.fields ?? []).flatMap(matchingFields)));
+// Each field gets one group for its own subfields and one per classification scheme.
 const fieldGroups = fields
   .filter((f) => f.root === f.id && usedFields.has(f.id))
-  .map((root) => ({ root, children: fields.filter((f) => f.root === root.id && f.id !== root.id && usedFields.has(f.id)) }));
+  .map((root) => {
+    const children = fields.filter((f) => f.root === root.id && f.id !== root.id && usedFields.has(f.id));
+    const schemes = new Map<string, { label: string; entries: Field[] }>();
+    for (const f of children.filter((c) => c.scheme)) {
+      const group = schemes.get(f.scheme!.id) ?? { label: `${root.label}: ${f.scheme!.label}`, entries: [] };
+      group.entries.push(f);
+      schemes.set(f.scheme!.id, group);
+    }
+    return { root, own: children.filter((c) => !c.scheme), schemes: [...schemes.values()] };
+  });
 const venues = [...new Set(posters.flatMap((p) => p.conference?.name ?? []))].sort((a, b) => a.localeCompare(b));
 const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => b - a);
 const usedLevels = new Set(posters.flatMap((p) => p.thesis?.level ?? []));
@@ -50,16 +60,25 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
                 <span class="visually-hidden">Field</span>
                 <select name="field">
                   <option value="">All fields</option>
-                  {fieldGroups.map(({ root, children }) =>
-                    children.length === 0 ? (
+                  {fieldGroups.map(({ root, own, schemes }) =>
+                    own.length === 0 && schemes.length === 0 ? (
                       <option value={root.id}>{root.label}</option>
                     ) : (
-                      <optgroup label={root.label}>
-                        <option value={root.id}>All {root.label}</option>
-                        {children.map((c) => (
+                      <>
+                        <optgroup label={root.label}>
+                          <option value={root.id}>All {root.label}</option>
+                          {own.map((c) => (
+                            <option value={c.id}>{c.label}</option>
+                          ))}
+                        </optgroup>
+                        {schemes.map((s) => (
+                          <optgroup label={s.label}>
+                            {s.entries.map((c) => (
                           <option value={c.id}>{"   ".repeat(c.broader.length) + shortName(c)}</option>
+                            ))}
+                          </optgroup>
                         ))}
-                      </optgroup>
+                      </>
                     ),
                   )}
                 </select>

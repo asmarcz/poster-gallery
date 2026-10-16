@@ -61,7 +61,7 @@ const poster = z.strictObject({
   fields: z
     .array(
       z.enum(fieldIds as [string, ...string[]], {
-        error: (issue) => `Unknown field "${issue.input}". Use an id from taxonomy.yml, or add it there.`,
+        error: (issue) => `Unknown field "${issue.input}". Use an id from taxonomy.yml or its schemes in taxonomy/, or add it to taxonomy.yml.`,
       }),
     )
     .min(1)
