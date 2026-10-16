@@ -1,0 +1,190 @@
+:root {
+  color-scheme: light dark;
+
+  --bg: oklch(0.985 0.004 85);
+  --surface: oklch(0.955 0.006 85);
+  --text: oklch(0.22 0.012 60);
+  --muted: oklch(0.47 0.012 60);
+  --rule: oklch(0.885 0.008 85);
+  --accent: oklch(0.45 0.12 258);
+  --accent-strong: oklch(0.37 0.12 258);
+  --on-accent: oklch(0.99 0 0);
+  --image-outline: oklch(0 0 0 / 0.1);
+  --shadow-rest: 0 1px 2px oklch(0.3 0.02 60 / 0.06), 0 2px 8px oklch(0.3 0.02 60 / 0.05);
+  --shadow-raised: 0 2px 4px oklch(0.3 0.02 60 / 0.07), 0 10px 28px oklch(0.3 0.02 60 / 0.1);
+  --control-shadow: 0 0 0 1px oklch(0.3 0.02 60 / 0.14), 0 1px 2px oklch(0.3 0.02 60 / 0.06);
+
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  /* Type scale */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-display: clamp(2rem, 1.4rem + 2.2vw, 2.875rem);
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --page-width: 76rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(0.185 0.006 70);
+    --surface: oklch(0.225 0.007 70);
+    --text: oklch(0.93 0.008 85);
+    --muted: oklch(0.7 0.01 80);
+    --rule: oklch(0.31 0.008 70);
+    --accent: oklch(0.78 0.1 258);
+    --accent-strong: oklch(0.86 0.08 258);
+    --on-accent: oklch(0.18 0.02 258);
+    --image-outline: oklch(1 0 0 / 0.1);
+    --shadow-rest: 0 1px 2px oklch(0 0 0 / 0.3), 0 2px 8px oklch(0 0 0 / 0.25);
+    --shadow-raised: 0 2px 4px oklch(0 0 0 / 0.35), 0 10px 28px oklch(0 0 0 / 0.4);
+    --control-shadow: 0 0 0 1px oklch(1 0 0 / 0.14);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.18em;
+  text-decoration-skip-ink: auto;
+}
+
+a:hover {
+  color: var(--accent-strong);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--accent) 22%, transparent);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Poster images: a hairline outline keeps light posters from bleeding into the page. */
+.poster-image {
+  border-radius: 2px;
+  outline: 1px solid var(--image-outline);
+  outline-offset: -1px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  box-shadow: var(--control-shadow);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition-property: scale, background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease);
+}
+
+.button:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.button:active {
+  scale: 0.96;
+}
+
+.button.primary {
+  background: var(--accent);
+  box-shadow: none;
+  color: var(--on-accent);
+}
+
+.button.primary:hover {
+  background: var(--accent-strong);
+}
+
+.button svg {
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+  }
+}

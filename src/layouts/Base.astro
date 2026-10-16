@@ -1,0 +1,104 @@
+---
+import "@fontsource-variable/source-serif-4/opsz.css";
+import "@fontsource-variable/source-serif-4/opsz-italic.css";
+import "@fontsource-variable/ibm-plex-sans/wght.css";
+import "../styles/global.css";
+import { contributingUrl, site, url } from "../site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = site.description, image } = Astro.props;
+const fullTitle = title ? `${title} · ${site.title}` : site.title;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title ?? site.title} />
+    <meta property="og:description" content={description} />
+    {image && Astro.site && <meta property="og:image" content={new URL(image, Astro.site)} />}
+    <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="page bar">
+        <a class="wordmark" href={url()}>{site.title}</a>
+        <nav aria-label="Site">
+          <a href={contributingUrl}>Submit a poster</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="page bar">
+        <p>Posters are © their authors.</p>
+        <a href={site.repoUrl}>Source on GitHub</a>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .site-header .bar {
+    min-height: 3.75rem;
+  }
+
+  .wordmark {
+    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .wordmark:hover {
+    color: var(--text);
+  }
+
+  nav a {
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  main {
+    min-height: 70vh;
+  }
+
+  .site-footer {
+    margin-top: 6rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: var(--text-sm);
+  }
+
+  .site-footer .bar {
+    padding-block: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .site-footer a {
+    color: inherit;
+  }
+</style>
