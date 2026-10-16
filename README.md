@@ -23,7 +23,8 @@ You don't have to read the instructions yourself: point your coding agent at
 
 ## How it works
 
-Each poster is a folder in `posters/` with a `poster.yml`, the PDF, and optionally its source.
+Each poster is a folder in `posters/` with a `poster.yml`, the PDF, and optionally its source
+and extended abstract.
 Pull requests are checked by CI and reviewed by hand ([REVIEWING.md](REVIEWING.md)).
 Merging to `main` publishes the site on GitHub Pages.
 

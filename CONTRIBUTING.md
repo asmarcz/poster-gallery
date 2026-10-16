@@ -7,25 +7,27 @@ poster and let it do the rest.
 
 ```
 posters/<slug>/
-  poster.yml    metadata (required)
-  poster.pdf    the poster (required)
-  source/       what the PDF was made from (optional)
+  poster.yml        metadata (required)
+  poster.pdf        the poster as presented (required)
+  poster-source/    what poster.pdf was made from (optional)
+  abstract.pdf      the extended abstract, e.g. from the proceedings (optional)
+  abstract-source/  what abstract.pdf was made from (optional)
 ```
 
 The slug is the poster's URL: lowercase words joined by hyphens, specific enough to stay
 unique, e.g. `gradual-notebooks-splash-2026`.
 
-Keep the PDF under 50 MB. Whatever tool you made the poster in, export it to PDF for
-`poster.pdf`, and share the source too, so others can see how it was made:
+Keep each PDF under 50 MB. Whatever tool you made them in, export them to PDF, and share the
+source too, so others can see how they were made:
 
 | Made in | Share |
 |---|---|
-| LaTeX, Typst, Inkscape, … | the source files in `source/` |
-| PowerPoint, Word, Keynote, LibreOffice | the `.pptx`, `.docx`, … file in `source/` |
-| Google Slides or Docs | the link as `repository:` (sharing: *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in `source/` |
-| Canva, Figma, Overleaf | a view link as `repository:`, plus an export in `source/` if the tool has one |
+| LaTeX, Typst, Inkscape, … | the source files in the `-source/` folder |
+| PowerPoint, Word, Keynote, LibreOffice | the `.pptx`, `.docx`, … file in the `-source/` folder |
+| Google Slides or Docs | the link as `repository:` (sharing: *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in the `-source/` folder |
+| Canva, Figma, Overleaf | a view link as `repository:`, plus an export in the `-source/` folder if the tool has one |
 
-The link lets others make an exact copy; the file in `source/` stays even if the link stops
+The link lets others make an exact copy; the exported file stays even if the link stops
 working.
 
 ## poster.yml
@@ -65,8 +67,8 @@ abstract: |                  # blank line between paragraphs
 
   Second paragraph.
 
-paper: https://example.org/paper.pdf
-doi: 10.1145/1234567.1234568    # without https://doi.org/
+paper: https://example.org/paper.pdf   # a related full paper, if any
+doi: 10.1145/1234567.1234568    # usually the extended abstract's; without https://doi.org/
 repository: https://github.com/you/project   # or a Google Slides, Overleaf, … link
 ```
 
@@ -88,7 +90,11 @@ Thesis levels don't depend on the country: Bc. and BSc are `bachelor`; Mgr., Ing
 repository.
 
 `repository` is the project's own repository, which may have moved on since the poster;
-`source/` is the poster as submitted. Either, both or neither is fine.
+the `-source/` folders hold exactly what the PDFs were made from. Either, both or neither is
+fine.
+
+The `abstract:` key is a short summary shown on the page; `abstract.pdf` is the full extended
+abstract. A poster usually has one DOI, the extended abstract's, and it goes in `doi:`.
 
 Fields come from [taxonomy.yml](taxonomy.yml): a top-level id like `Biology` or a subfield
 like `Biology/Ecology`. Pick the most specific one. If none fits, add it to `taxonomy.yml` in

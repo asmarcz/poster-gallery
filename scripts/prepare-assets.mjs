@@ -22,6 +22,7 @@ const THUMB_VERSION = 1;
 const THUMB_WIDTHS = [480, 960, 1600];
 const RENDER_LONG_EDGE = 2400;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const ALLOWED = new Set(["poster.yml", "poster.pdf", "poster-source", "abstract.pdf", "abstract-source"]);
 const MiB = 1024 * 1024;
 const PAGES_LIMIT_WARNING = 800 * MiB;
 
@@ -69,6 +70,9 @@ async function prepare(slug) {
   if (!existsSync(join(dir, "poster.yml"))) errors.push("poster.yml is missing");
   const pdf = join(dir, "poster.pdf");
   if (!existsSync(pdf)) errors.push("poster.pdf is missing");
+  for (const name of await readdir(dir)) {
+    if (!ALLOWED.has(name)) errors.push(`unexpected "${name}"; a poster folder may only contain ${[...ALLOWED].join(", ")}`);
+  }
   if (errors.length) return { slug, errors };
 
   const hash = await sha256(pdf);
@@ -87,22 +91,38 @@ async function prepare(slug) {
     srcset[w] = `posters/${slug}/${name}`;
   }
 
+  // The extended abstract is optional, and so is each of its parts.
+  const abstractPdf = join(dir, "abstract.pdf");
+  const hasAbstractPdf = existsSync(abstractPdf);
+  if (hasAbstractPdf) await copyFile(abstractPdf, join(out, `${slug}-abstract.pdf`));
+  const abstractSource = await sourceFiles(join(dir, "abstract-source"));
+
   return {
     slug,
     errors,
     cached: thumb.cached,
     asset: {
-      pdf: `posters/${slug}/${slug}.pdf`,
-      pdfBytes: size,
       thumbs: srcset,
       width: thumb.width,
       height: thumb.height,
-      sourceFiles: await sourceFiles(join(dir, "source")),
+      poster: {
+        pdf: `posters/${slug}/${slug}.pdf`,
+        pdfBytes: size,
+        sourceFiles: await sourceFiles(join(dir, "poster-source")),
+      },
+      abstract:
+        hasAbstractPdf || abstractSource.length
+          ? {
+              pdf: hasAbstractPdf ? `posters/${slug}/${slug}-abstract.pdf` : null,
+              pdfBytes: hasAbstractPdf ? (await stat(abstractPdf)).size : null,
+              sourceFiles: abstractSource,
+            }
+          : null,
     },
   };
 }
 
-/** Paths of the files in source/, relative to it; empty when there is no source/. */
+/** Paths of the files in a source folder, relative to it; empty when there is no such folder. */
 async function sourceFiles(dir) {
   if (!existsSync(dir)) return [];
   const entries = await readdir(dir, { recursive: true, withFileTypes: true });
@@ -145,7 +165,7 @@ await mkdir(join(root, "src", "generated"), { recursive: true });
 await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
 
 const rendered = results.filter((r) => !r.cached).length;
-const total = results.reduce((sum, r) => sum + r.asset.pdfBytes, 0);
+const total = results.reduce((sum, r) => sum + r.asset.poster.pdfBytes + (r.asset.abstract?.pdfBytes ?? 0), 0);
 console.log(
   `${results.length} posters, ${(total / MiB).toFixed(1)} MiB of PDFs; ` +
     `${rendered} thumbnail${rendered === 1 ? "" : "s"} rendered, ${results.length - rendered} from cache`,

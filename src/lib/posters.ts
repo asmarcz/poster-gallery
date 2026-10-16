@@ -2,14 +2,22 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import assets from "../generated/assets.json";
 import { site, url } from "../site";
 
+/** The poster itself or its extended abstract: a PDF and the files it was made from. */
+export interface PosterDocument {
+  pdf: string | null;
+  pdfBytes: number | null;
+  sourceFiles: string[];
+}
+
 export interface PosterAsset {
-  pdf: string;
-  pdfBytes: number;
   thumbs: Record<string, string>;
   width: number;
   height: number;
-  sourceFiles: string[];
+  poster: PosterDocument & { pdf: string; pdfBytes: number };
+  abstract: PosterDocument | null;
 }
+
+export type Part = "poster" | "abstract";
 
 export type Poster = CollectionEntry<"posters">["data"] & {
   slug: string;
@@ -27,7 +35,7 @@ export async function getPosters(): Promise<Poster[]> {
 }
 
 export function pdfUrl(p: Poster): string {
-  return url(p.asset.pdf);
+  return url(p.asset.poster.pdf);
 }
 
 export function thumbSrcset(p: Poster): string {
@@ -62,11 +70,11 @@ const sourceFormats: Record<string, string> = {
 const textSources = new Set(["tex", "typ", "svg", "bib", "md", "txt"]);
 
 /**
- * Link to the poster's source/ at the commit the site was built from, named after its main format.
- * A single file links straight to the file so it downloads; several files link to the folder.
+ * Link to the poster's or abstract's source folder at the commit the site was built from, named
+ * after its main format. A single file links straight to the file; several link to the folder.
  */
-export function sourceLink(p: Poster): { url: string; label: string } | undefined {
-  const files = p.asset.sourceFiles;
+export function sourceLink(p: Poster, part: Part): { url: string; label: string } | undefined {
+  const files = p.asset[part]?.sourceFiles ?? [];
   if (!files.length) return undefined;
 
   const counts = new Map<string, number>();
@@ -75,9 +83,9 @@ export function sourceLink(p: Poster): { url: string; label: string } | undefine
     if (format) counts.set(format, (counts.get(format) ?? 0) + 1);
   }
   const format = [...counts].sort((a, b) => b[1] - a[1])[0]?.[0];
-  const label = format ? `${format} source` : "Poster source";
+  const label = format ? `${format} source` : "Source";
 
-  const base = `${site.commit}/posters/${p.slug}/source`;
+  const base = `${site.commit}/posters/${p.slug}/${part}-source`;
   if (files.length > 1) return { url: `${site.repoUrl}/tree/${base}`, label };
   // GitHub shows text files; binary ones (.pptx, .key, …) are better downloaded directly.
   const file = files[0].split("/").map(encodeURIComponent).join("/");

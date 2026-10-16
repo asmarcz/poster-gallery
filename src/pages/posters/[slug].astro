@@ -27,7 +27,9 @@ interface Props {
 const { poster: p } = Astro.props;
 
 const pageUrl = Astro.site ? new URL(url(`posters/${p.slug}/`), Astro.site).href : undefined;
-const source = sourceLink(p);
+const source = sourceLink(p, "poster");
+const abstract = p.asset.abstract;
+const abstractSource = sourceLink(p, "abstract");
 const cite = bibtex(p, pageUrl ?? "");
 
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
@@ -115,11 +117,12 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
           }
         </header>
 
-        <div class="actions">
+        <div class:list={["actions", abstract && "part"]}>
+          {abstract && <h2 class="part-label">Poster</h2>}
           <a class="button primary" href={pdfUrl(p)}>View PDF</a>
           <a class="button" href={pdfUrl(p)} download={`${p.slug}.pdf`}>
             <Icon name="download" />
-            Download <span class="size">{formatBytes(p.asset.pdfBytes)}</span>
+            Download <span class="size">{formatBytes(p.asset.poster.pdfBytes)}</span>
           </a>
           {
             source && (
@@ -138,6 +141,31 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
             )
           }
         </div>
+
+        {
+          abstract && (
+            <div class="actions part">
+              <h2 class="part-label">Extended abstract</h2>
+              {abstract.pdf && (
+                <>
+                  <a class="button" href={url(abstract.pdf)}>
+                    View PDF
+                  </a>
+                  <a class="button" href={url(abstract.pdf)} download={`${p.slug}-abstract.pdf`}>
+                    <Icon name="download" />
+                    Download <span class="size">{formatBytes(abstract.pdfBytes!)}</span>
+                  </a>
+                </>
+              )}
+              {abstractSource && (
+                <a class="button" href={abstractSource.url}>
+                  <Icon name="code" />
+                  {abstractSource.label}
+                </a>
+              )}
+            </div>
+          )
+        }
 
         {
           p.abstract && (
@@ -395,6 +423,22 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
     flex-wrap: wrap;
     gap: 0.625rem;
     margin-top: 2rem;
+  }
+
+  .actions.part {
+    align-items: center;
+  }
+
+  .actions.part + .actions.part {
+    margin-top: 1.25rem;
+  }
+
+  .part-label {
+    flex-basis: 100%;
+    color: var(--muted);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
   }
 
   .size {

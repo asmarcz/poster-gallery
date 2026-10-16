@@ -34,8 +34,10 @@ Tags are free text, so they need a careful look, or the filters fill with near-d
 ## Files
 
 - `poster.pdf` is the final poster, opens, and is under 50 MB.
-- `source/`, if present, is the source of this PDF, without build leftovers, secrets or
-  personal data.
+- `abstract.pdf`, if present, is the extended abstract of this poster, and the DOI belongs
+  to it.
+- `poster-source/` and `abstract-source/`, if present, are the sources of the matching PDF,
+  without build leftovers, secrets or personal data.
 - A `repository` link to an online editor (Google Slides, Canva, …) is read-only for anyone
   with the link. A link that grants edit access must be changed before merging.
 - The authors agree to publishing it, and nothing is under embargo.
