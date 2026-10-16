@@ -31,6 +31,7 @@ const tagCounts = new Map<string, number>();
 for (const t of posters.flatMap((p) => p.tags ?? [])) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
 const tags = [...tagCounts].sort(([a], [b]) => a.localeCompare(b));
 const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(level as ThesisLevel));
+const withAbstract = posters.filter((p) => p.asset.abstract?.pdf).length;
 ---
 
 <Base>
@@ -131,6 +132,12 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
                 </select>
               </label>
             )}
+            {withAbstract > 0 && (
+              <label class="check">
+                <input type="checkbox" name="abstract" value="1" />
+                With extended abstract
+              </label>
+            )}
           </form>
 
           <div class="status">
@@ -165,26 +172,34 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
     const count = document.querySelector("#count")!;
     const clear = document.querySelector<HTMLButtonElement>("#clear")!;
     const noResults = document.querySelector<HTMLElement>("#no-results")!;
-    const names = ["q", "field", "venue", "year", "thesis", "tag"] as const;
+    const names = ["q", "field", "venue", "year", "thesis", "tag", "abstract"] as const;
 
     const control = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+    const isCheckbox = (el: Element | null): el is HTMLInputElement => el instanceof HTMLInputElement && el.type === "checkbox";
 
     // Start from the URL so filtered views can be shared and survive reloads.
     const params = new URLSearchParams(location.search);
     for (const name of names) {
       const el = control(name);
       const value = params.get(name);
-      if (el && value) el.value = value;
+      if (isCheckbox(el)) el.checked = value === el.value;
+      else if (el && value) el.value = value;
     }
 
     function apply() {
-      const value = (name: string) => control(name)?.value.trim() ?? "";
+      // A checkbox counts as its value when checked and as empty otherwise.
+      const value = (name: string) => {
+        const el = control(name);
+        if (isCheckbox(el)) return el.checked ? el.value : "";
+        return el?.value.trim() ?? "";
+      };
       const words = value("q").toLowerCase().split(/\s+/).filter(Boolean);
       const fieldId = value("field");
       const venue = value("venue");
       const year = value("year");
       const thesis = value("thesis");
       const tag = value("tag");
+      const abstract = value("abstract");
 
       let shown = 0;
       for (const card of cards) {
@@ -195,6 +210,7 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
           (!venue || d.venue === venue) &&
           (!year || d.year === year) &&
           (!thesis || (thesis === "any" ? d.thesis !== "" : d.thesis === thesis)) &&
+          (!abstract || d.abstract === "1") &&
           (!tag || (JSON.parse(d.tags!) as string[]).includes(tag));
         card.hidden = !match;
         if (match) shown++;
@@ -270,6 +286,28 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
     display: flex;
     flex: 1 1 auto;
     max-width: 100%;
+  }
+
+  .filters .check {
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.5rem;
+    padding: 0 0.875rem 0 0.75rem;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--control-shadow);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .filters .check input {
+    min-height: 0;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    box-shadow: none;
+    accent-color: var(--accent);
+    cursor: pointer;
   }
 
   .filters select {
