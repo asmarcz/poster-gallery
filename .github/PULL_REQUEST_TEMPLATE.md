@@ -1,11 +1,10 @@
-<!-- Submitting a poster? Follow CONTRIBUTING.md. One poster per pull request. -->
+<!-- See CONTRIBUTING.md. One poster per pull request. -->
 
-**Poster folder:** `posters/<slug>/`
+Poster: `posters/<slug>/`
 
-- [ ] `poster.yml` has at least a `title`, and every other key matches the poster
-- [ ] `poster.pdf` is the final version of the poster
-- [ ] `source/` contains the source of exactly this PDF (or there is no `source/`)
-- [ ] All authors agree to the poster being published
-- [ ] New field added to `taxonomy.yml`: <!-- say which and why, or delete this line -->
+- [ ] `poster.yml` matches the poster
+- [ ] `poster.pdf` is the final version
+- [ ] `source/`, if included, is the source of this PDF
+- [ ] All authors agree to publishing it
 
-<!-- Anything a reviewer should know: -->
+<!-- New field in taxonomy.yml, or anything else a reviewer should know: -->

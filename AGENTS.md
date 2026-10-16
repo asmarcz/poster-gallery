@@ -1,5 +1,4 @@
-# Notes for coding agents
+# For coding agents
 
-- To submit a poster, follow [CONTRIBUTING.md](CONTRIBUTING.md).
-- To review a poster pull request, follow [REVIEWING.md](REVIEWING.md).
-- `npm run build` validates every poster; run it before opening a pull request.
+- Adding a poster: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Reviewing one: [REVIEWING.md](REVIEWING.md)

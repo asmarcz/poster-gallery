@@ -1,52 +1,36 @@
-# Reviewing a submission
+# Reviewing a poster
 
-For maintainers and for agents asked to review a poster pull request.
-CI already checks the folder name, that `poster.pdf` exists, and that `poster.yml` matches the
-schema (required title, known keys, field ids from `taxonomy.yml`, URL and DOI formats).
-Everything below is what CI cannot judge and must be checked by reading the submission.
-An agent should report each problem it finds with the file and line, and must not approve or
-merge on its own.
+CI checks the folder, that the PDF exists and that `poster.yml` is valid. This list is
+everything it can't check. Agents: report problems with file and line, and leave approving
+and merging to a maintainer.
 
 ## Scope
 
-- [ ] The PR adds or changes exactly one folder under `posters/`, plus `taxonomy.yml` if a new
-      field is introduced. Changes to anything else belong in a separate PR.
-- [ ] The slug is specific (topic plus venue or year), not generic like `poster` or `my-poster`.
+- The PR touches one folder in `posters/`, plus `taxonomy.yml` if it adds a field.
+- The slug is specific: `gradual-notebooks-splash-2026`, not `my-poster`.
 
 ## Metadata matches the PDF
 
-Open `poster.pdf` and compare:
+- Title and authors match the poster, authors in the same order and spelling.
+- Affiliations, conference and year match the poster. The conference name is written the
+  same way as on other posters from that event (`grep -rh "name:" posters/*/poster.yml`).
+- Links and the DOI resolve to what they claim.
 
-- [ ] `title` matches the poster's title (capitalisation may differ).
-- [ ] `authors` lists the same people, in the same order, with names spelled as on the poster.
-      Affiliations, if given, match the poster.
-- [ ] `conference` and `year` are plausible for the poster; the conference name follows the
-      form already used by other posters from the same event (compare with
-      `grep -rh "name:" posters/*/poster.yml`).
-- [ ] `abstract`, if given, describes this poster and contains no markup that will not render
-      (it is shown as plain paragraphs).
-- [ ] `paper`, `doi`, `repository` and author `url`s resolve and point to what they claim.
+## Tags and fields
 
-## Free-form values need a human check
+Tags are free text, so they need a careful look, or the filters fill with near-duplicates.
 
-`tags` and new `taxonomy.yml` entries are not validated against anything, so review them
-carefully; inconsistencies here fragment the filters on the site.
-
-- [ ] Each tag is meaningful and not a duplicate in disguise of an existing tag: compare with
-      `grep -rh -A20 "^tags:" posters/*/poster.yml` and ask for the existing spelling
-      (`type inference`, not `Type-Inference` or `type-inference`).
-- [ ] Tags are lowercase unless they are proper nouns or acronyms, and do not repeat the field.
-- [ ] A new field in `taxonomy.yml` is genuinely missing: no existing field or subfield fits,
-      the id is PascalCase, it sits under the right parent, and its label is spelled out.
-- [ ] `fields` uses the most specific fitting id.
+- Each tag is lowercase (unless a proper noun or acronym) and doesn't duplicate an existing
+  tag under another spelling: `type inference`, not `Type-Inference`. Compare with
+  `grep -rh -A20 "^tags:" posters/*/poster.yml`.
+- Tags don't repeat the field.
+- `fields` uses the most specific fitting id.
+- A new entry in `taxonomy.yml` is really missing, sits under the right parent, has a
+  PascalCase id and a spelled-out label.
 
 ## Files
 
-- [ ] `poster.pdf` is the final poster (not a draft, not a paper), opens, and has no
-      password or broken fonts.
-- [ ] The PDF is under 50 MB. If it is far larger than its content warrants (e.g. embedded
-      full-resolution photos), ask the author whether a smaller export is possible.
-- [ ] `source/`, if present, is the source of this PDF, contains no build artefacts beyond what
-      is needed, and contains no secrets, credentials, personal data or large unrelated files.
-- [ ] Everything submitted can be published: the authors agree to it being public, and
-      nothing is under embargo.
+- `poster.pdf` is the final poster, opens, and is under 50 MB.
+- `source/`, if present, is the source of this PDF, without build leftovers, secrets or
+  personal data.
+- The authors agree to publishing it, and nothing is under embargo.
