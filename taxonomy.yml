@@ -1,0 +1,55 @@
+# Research fields a poster can be filed under.
+#
+# A poster refers to a field by its id: either a top-level key ("Biology")
+# or a key and one of its subfields ("CS/ProgrammingLanguages").
+# To add a field, add it here in the same pull request as the poster.
+# Ids use PascalCase with no spaces; `label` is what the site shows.
+
+CS:
+  label: Computer Science
+  subfields:
+    ProgrammingLanguages: Programming Languages
+    FormalVerification: Formal Verification
+    SoftwareEngineering: Software Engineering
+    Systems: Systems
+    Security: Security
+    MachineLearning: Machine Learning
+    Databases: Databases
+    Networks: Networks
+    HCI: Human–Computer Interaction
+    Graphics: Graphics
+    Theory: Theory
+
+Mathematics:
+  label: Mathematics
+
+Physics:
+  label: Physics
+
+Chemistry:
+  label: Chemistry
+
+Biology:
+  label: Biology
+  subfields:
+    Bioinformatics: Bioinformatics
+    Ecology: Ecology
+    Genetics: Genetics
+
+Medicine:
+  label: Medicine
+
+Engineering:
+  label: Engineering
+
+EarthSciences:
+  label: Earth Sciences
+
+Economics:
+  label: Economics
+
+SocialSciences:
+  label: Social Sciences
+
+Humanities:
+  label: Humanities
