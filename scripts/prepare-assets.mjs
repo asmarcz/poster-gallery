@@ -97,9 +97,19 @@ async function prepare(slug) {
       thumbs: srcset,
       width: thumb.width,
       height: thumb.height,
-      hasSource: existsSync(join(dir, "source")),
+      sourceFiles: await sourceFiles(join(dir, "source")),
     },
   };
+}
+
+/** Paths of the files in source/, relative to it; empty when there is no source/. */
+async function sourceFiles(dir) {
+  if (!existsSync(dir)) return [];
+  const entries = await readdir(dir, { recursive: true, withFileTypes: true });
+  return entries
+    .filter((e) => e.isFile())
+    .map((e) => join(e.parentPath, e.name).slice(dir.length + 1))
+    .sort();
 }
 
 /** Runs `fn` over `items` with at most `limit` running at once. */

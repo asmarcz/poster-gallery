@@ -15,8 +15,18 @@ posters/<slug>/
 The slug is the poster's URL: lowercase words joined by hyphens, specific enough to stay
 unique, e.g. `gradual-notebooks-splash-2026`.
 
-Put the source of this exact PDF in `source/` (LaTeX, Typst, SVG, …), so others can see how
-it was made. Keep the PDF under 50 MB.
+Keep the PDF under 50 MB. Whatever tool you made the poster in, export it to PDF for
+`poster.pdf`, and share the source too, so others can see how it was made:
+
+| Made in | Share |
+|---|---|
+| LaTeX, Typst, Inkscape, … | the source files in `source/` |
+| PowerPoint, Word, Keynote, LibreOffice | the `.pptx`, `.docx`, … file in `source/` |
+| Google Slides or Docs | a link in `editable:` (set sharing to *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in `source/` |
+| Canva, Figma, Overleaf | a view link in `editable:`, plus an export in `source/` if the tool has one |
+
+A link lets others make an exact copy; the file in `source/` stays even if the link stops
+working. Google links get a "make a copy" button automatically.
 
 ## poster.yml
 
@@ -58,6 +68,7 @@ abstract: |                  # blank line between paragraphs
 paper: https://example.org/paper.pdf
 doi: 10.1145/1234567.1234568    # without https://doi.org/
 repository: https://github.com/you/project
+editable: https://docs.google.com/presentation/d/…/edit   # poster in an online editor
 ```
 
 Tags are free keywords for what the field doesn't say: methods, organisms, materials, topics.
@@ -89,8 +100,9 @@ Agents: take the metadata from the PDF, and ask the author for anything it doesn
 
 ## Check and submit
 
-Fork the repository and add the folder on a branch. `npm run build` fails with an explanation if something is wrong (needs Node.js 22+ and
-`pdftoppm`). CI runs the same check on the pull request.
+Fork the repository and add the folder on a branch. `npm run build` fails with an
+explanation if something is wrong (needs Node.js 22+ and `pdftoppm`). CI runs the same check
+on the pull request.
 
 ```sh
 gh pr create --title "Add poster: <title>" --template .github/PULL_REQUEST_TEMPLATE.md

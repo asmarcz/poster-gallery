@@ -35,4 +35,6 @@ Tags are free text, so they need a careful look, or the filters fill with near-d
 - `poster.pdf` is the final poster, opens, and is under 50 MB.
 - `source/`, if present, is the source of this PDF, without build leftovers, secrets or
   personal data.
+- `editable`, if present, opens the same poster for anyone with the link, read-only. A link
+  that grants edit access must be changed before merging.
 - The authors agree to publishing it, and nothing is under embargo.

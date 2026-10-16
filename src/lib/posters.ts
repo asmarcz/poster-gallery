@@ -8,7 +8,7 @@ export interface PosterAsset {
   thumbs: Record<string, string>;
   width: number;
   height: number;
-  hasSource: boolean;
+  sourceFiles: string[];
 }
 
 export type Poster = CollectionEntry<"posters">["data"] & {
@@ -40,8 +40,62 @@ export function thumbSrc(p: Poster, width: number): string {
   return url(p.asset.thumbs[width]);
 }
 
-export function sourceUrl(p: Poster): string | undefined {
-  return p.asset.hasSource ? `${site.repoUrl}/tree/${site.commit}/posters/${p.slug}/source` : undefined;
+const sourceFormats: Record<string, string> = {
+  pptx: "PowerPoint",
+  ppt: "PowerPoint",
+  docx: "Word",
+  doc: "Word",
+  odp: "LibreOffice",
+  odt: "LibreOffice",
+  odg: "LibreOffice",
+  key: "Keynote",
+  pages: "Pages",
+  tex: "LaTeX",
+  typ: "Typst",
+  svg: "SVG",
+  ai: "Illustrator",
+  indd: "InDesign",
+  afdesign: "Affinity",
+  afpub: "Affinity",
+};
+
+const textSources = new Set(["tex", "typ", "svg", "bib", "md", "txt"]);
+
+/**
+ * Link to the poster's source/ at the commit the site was built from, named after its main format.
+ * A single file links straight to the file so it downloads; several files link to the folder.
+ */
+export function sourceLink(p: Poster): { url: string; label: string } | undefined {
+  const files = p.asset.sourceFiles;
+  if (!files.length) return undefined;
+
+  const counts = new Map<string, number>();
+  for (const f of files) {
+    const format = sourceFormats[f.split(".").pop()!.toLowerCase()];
+    if (format) counts.set(format, (counts.get(format) ?? 0) + 1);
+  }
+  const format = [...counts].sort((a, b) => b[1] - a[1])[0]?.[0];
+  const label = format ? `${format} source` : "Poster source";
+
+  const base = `${site.commit}/posters/${p.slug}/source`;
+  if (files.length > 1) return { url: `${site.repoUrl}/tree/${base}`, label };
+  // GitHub shows text files; binary ones (.pptx, .key, …) are better downloaded directly.
+  const file = files[0].split("/").map(encodeURIComponent).join("/");
+  const view = textSources.has(file.split(".").pop()!.toLowerCase()) ? "blob" : "raw";
+  return { url: `${site.repoUrl}/${view}/${base}/${file}`, label };
+}
+
+/** Link to the poster in an online editor; Google links open Google's "make a copy" page. */
+export function editableLink(p: Poster): { url: string; label: string } | undefined {
+  if (!p.editable) return undefined;
+  const google = p.editable.match(/^https:\/\/docs\.google\.com\/(presentation|document|drawings)\/d\/[^/?#]+/);
+  if (google) {
+    const app = { presentation: "Google Slides", document: "Google Docs", drawings: "Google Drawings" }[google[1]];
+    return { url: `${google[0]}/copy`, label: `Copy in ${app}` };
+  }
+  const host = new URL(p.editable).hostname.replace(/^www\./, "");
+  const app = { "canva.com": "Canva", "figma.com": "Figma", "overleaf.com": "Overleaf" }[host];
+  return { url: p.editable, label: app ? `Open in ${app}` : "Open editable version" };
 }
 
 /** "Ada Lovelace", "Ada Lovelace and Charles Babbage", "Ada Lovelace et al." */

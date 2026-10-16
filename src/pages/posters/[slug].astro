@@ -6,7 +6,8 @@ import {
   formatBytes,
   getPosters,
   pdfUrl,
-  sourceUrl,
+  sourceLink,
+  editableLink,
   thumbSrc,
   thumbSrcset,
   type Poster,
@@ -27,7 +28,8 @@ interface Props {
 const { poster: p } = Astro.props;
 
 const pageUrl = Astro.site ? new URL(url(`posters/${p.slug}/`), Astro.site).href : undefined;
-const source = sourceUrl(p);
+const source = sourceLink(p);
+const editable = editableLink(p);
 const cite = bibtex(p, pageUrl ?? "");
 
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
@@ -123,9 +125,17 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
           </a>
           {
             source && (
-              <a class="button" href={source}>
+              <a class="button" href={source.url}>
                 <Icon name="code" />
-                Poster source
+                {source.label}
+              </a>
+            )
+          }
+          {
+            editable && (
+              <a class="button" href={editable.url}>
+                <Icon name="copy" />
+                {editable.label}
               </a>
             )
           }
