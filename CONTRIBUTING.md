@@ -22,13 +22,14 @@ source too, so others can see how they were made:
 
 | Made in | Share |
 |---|---|
-| LaTeX, Typst, Inkscape, … | the source files in the `-source/` folder |
+| LaTeX, Typst, Inkscape, … (Overleaf included) | the source files in the `-source/` folder |
 | PowerPoint, Word, Keynote, LibreOffice | the `.pptx`, `.docx`, … file in the `-source/` folder |
-| Google Slides or Docs | the link as `repository:` (sharing: *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in the `-source/` folder |
-| Canva, Figma, Overleaf | a view link as `repository:`, plus an export in the `-source/` folder if the tool has one |
+| Google Slides or Docs | the link as `editable:` (sharing: *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in the `-source/` folder |
+| Canva, Figma | a view link as `editable:`, plus an export in the `-source/` folder if the tool has one |
 
-The link lets others make an exact copy; the exported file stays even if the link stops
-working.
+`editable` is only for proprietary online tools whose files can't be committed as they are.
+The link lets others make an exact copy (Google links open Google's "make a copy" page); the
+exported file stays even if the link stops working.
 
 ## poster.yml
 
@@ -70,7 +71,8 @@ abstract: |                  # blank line between paragraphs
 
 paper: https://example.org/paper.pdf   # a related full paper, if any
 doi: 10.1145/1234567.1234568    # usually the extended abstract's; without https://doi.org/
-repository: https://github.com/you/project   # or a Google Slides, Overleaf, … link
+artifact: https://github.com/you/tool   # the code, data or tool the poster presents
+editable: https://docs.google.com/presentation/d/…/edit   # only for Google Slides, Canva, …
 ```
 
 Tags are free keywords for what the field doesn't say: methods, organisms, materials, topics.
@@ -90,9 +92,9 @@ Thesis levels don't depend on the country: Bc. and BSc are `bachelor`; Mgr., Ing
 `master`; Ph.D. is `doctoral`. `url` points to the thesis itself, e.g. in your university's
 repository.
 
-`repository` is the project's own repository, which may have moved on since the poster;
-the `-source/` folders hold exactly what the PDFs were made from. Either, both or neither is
-fine.
+`artifact` links to what the research produced: the tool, library, dataset or experiments the
+poster is about, on any host. It is never the poster's own source: that goes in the `-source/`
+folders (files) or `editable` (a link). Any combination of the three is fine.
 
 The `abstract:` key is a short summary shown on the page; `abstract.pdf` is the full extended
 abstract. A poster usually has one DOI, the extended abstract's, and it goes in `doi:`.
@@ -120,7 +122,7 @@ field, the scheme and the entry's path:
 Pick the most specific entries that fit; several fields, from several schemes, are fine.
 
 Agents: take the metadata from the PDF, and ask the author for anything it doesn't show
-(conference, year, source, repository) rather than guessing. You may look up missing
+(conference, year, source, artifact) rather than guessing. You may look up missing
 details online, such as the DOI, the conference's full name and URL, or ORCID iDs, but say so
 explicitly: tell the author, and list every value you found online, with where you found
 it, in the pull request description.

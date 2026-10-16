@@ -47,4 +47,4 @@ abstract: |
   toolkit's design and our plans to apply it to the R language.
 
 doi: 10.1145/3849733.3849786
-repository: https://github.com/asmarcz/MLsem-vscode
+artifact: https://github.com/asmarcz/MLsem-vscode

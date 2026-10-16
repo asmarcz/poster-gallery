@@ -41,6 +41,9 @@ Tags are free text, so they need a careful look, or the filters fill with near-d
   to it.
 - `poster-source/` and `abstract-source/`, if present, are the sources of the matching PDF,
   without build leftovers, secrets or personal data.
-- A `repository` link to an online editor (Google Slides, Canva, …) is read-only for anyone
-  with the link. A link that grants edit access must be changed before merging.
+- `artifact` links to the research the poster presents, not to the poster's own source.
+- `editable`, if present, points to a proprietary online tool (Google Slides, Canva, …), opens
+  the same poster, and is read-only for anyone with the link. A link that grants edit access
+  must be changed before merging. Sources that can be committed (LaTeX, Typst, `.pptx`, …)
+  belong in `poster-source/` instead.
 - The authors agree to publishing it, and nothing is under embargo.

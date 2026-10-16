@@ -7,6 +7,7 @@ import {
   getPosters,
   pdfUrl,
   sourceLink,
+  editableLink,
   thumbSrc,
   thumbSrcset,
   type Poster,
@@ -30,6 +31,7 @@ const pageUrl = Astro.site ? new URL(url(`posters/${p.slug}/`), Astro.site).href
 const source = sourceLink(p, "poster");
 const abstract = p.asset.abstract;
 const abstractSource = sourceLink(p, "abstract");
+const editable = editableLink(p);
 const cite = bibtex(p, pageUrl ?? "");
 
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
@@ -134,10 +136,18 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
             )
           }
           {
-            !abstract && p.repository && (
-              <a class="button" href={p.repository}>
+            editable && (
+              <a class="button" href={editable.url}>
+                <Icon name="copy" />
+                {editable.label}
+              </a>
+            )
+          }
+          {
+            !abstract && p.artifact && (
+              <a class="button" href={p.artifact}>
                 <Icon name="repo" />
-                Repository
+                Artifact
               </a>
             )
           }
@@ -167,13 +177,13 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
             </div>
           )
         }
-        {/* The repository belongs to the whole project, so it sits apart from the poster and abstract rows. */}
+        {/* The artifact belongs to the whole project, so it sits apart from the poster and abstract rows. */}
         {
-          abstract && p.repository && (
+          abstract && p.artifact && (
             <div class="actions part">
-              <a class="button" href={p.repository}>
+              <a class="button" href={p.artifact}>
                 <Icon name="repo" />
-                Repository
+                Artifact
               </a>
             </div>
           )

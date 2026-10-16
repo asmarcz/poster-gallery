@@ -93,6 +93,19 @@ export function sourceLink(p: Poster, part: Part): { url: string; label: string 
   return { url: `${site.repoUrl}/${view}/${base}/${file}`, label };
 }
 
+/** Link to the poster in a proprietary online editor; Google links open Google's "make a copy" page. */
+export function editableLink(p: Poster): { url: string; label: string } | undefined {
+  if (!p.editable) return undefined;
+  const google = p.editable.match(/^https:\/\/docs\.google\.com\/(presentation|document|drawings)\/d\/[^/?#]+/);
+  if (google) {
+    const app = { presentation: "Google Slides", document: "Google Docs", drawings: "Google Drawings" }[google[1]];
+    return { url: `${google[0]}/copy`, label: `Copy in ${app}` };
+  }
+  const host = new URL(p.editable).hostname.replace(/^www\./, "");
+  const app = { "canva.com": "Canva", "figma.com": "Figma" }[host];
+  return { url: p.editable, label: app ? `Open in ${app}` : "Open editable version" };
+}
+
 /** "Ada Lovelace", "Ada Lovelace and Charles Babbage", "Ada Lovelace et al." */
 export function authorsShort(p: Poster): string | undefined {
   const names = p.authors?.map((a) => a.name);
