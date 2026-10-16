@@ -5,16 +5,18 @@
 # To add a field, add it here in the same pull request as the poster.
 # Ids use PascalCase with no spaces; `label` is what the site shows.
 
-# Subfields are the second-level concepts of the ACM Computing Classification System (2012),
-# https://dl.acm.org/ccs, grouped below by their top-level class. Finer ACM concepts, like
-# "programming languages", go in tags.
+# Subfields are the first- and second-level concepts of the ACM Computing Classification
+# System (2012), https://dl.acm.org/ccs: each broad class is followed by its concepts.
+# Use a broad class when no concept fits. Finer ACM concepts, like "programming languages",
+# go in tags.
 CS:
   label: Computer Science
   subfields:
-    # General and reference
+    GeneralAndReference: General and reference
     DocumentTypes: Document types
     CrossComputingToolsAndTechniques: Cross-computing tools and techniques
-    # Hardware
+
+    Hardware: Hardware
     PrintedCircuitBoards: Printed circuit boards
     CommunicationHardwareInterfacesAndStorage: "Communication hardware, interfaces and storage"
     IntegratedCircuits: Integrated circuits
@@ -25,12 +27,14 @@ CS:
     HardwareTest: Hardware test
     Robustness: Robustness
     EmergingTechnologies: Emerging technologies
-    # Computer systems organization
+
+    ComputerSystemsOrganization: Computer systems organization
     Architectures: Architectures
     EmbeddedAndCyberPhysicalSystems: Embedded and cyber-physical systems
     RealTimeSystems: Real-time systems
     DependableAndFaultTolerantSystemsAndNetworks: Dependable and fault-tolerant systems and networks
-    # Networks
+
+    Networks: Networks
     NetworkArchitectures: Network architectures
     NetworkProtocols: Network protocols
     NetworkComponents: Network components
@@ -39,11 +43,13 @@ CS:
     NetworkProperties: Network properties
     NetworkServices: Network services
     NetworkTypes: Network types
-    # Software and its engineering
+
+    SoftwareAndItsEngineering: Software and its engineering
     SoftwareOrganizationAndProperties: Software organization and properties
     SoftwareNotationsAndTools: Software notations and tools
     SoftwareCreationAndManagement: Software creation and management
-    # Theory of computation
+
+    TheoryOfComputation: Theory of computation
     ModelsOfComputation: Models of computation
     FormalLanguagesAndAutomataTheory: Formal languages and automata theory
     ComputationalComplexityAndCryptography: Computational complexity and cryptography
@@ -52,20 +58,23 @@ CS:
     RandomnessGeometryAndDiscreteStructures: "Randomness, geometry and discrete structures"
     TheoryAndAlgorithmsForApplicationDomains: Theory and algorithms for application domains
     SemanticsAndReasoning: Semantics and reasoning
-    # Mathematics of computing
+
+    MathematicsOfComputing: Mathematics of computing
     DiscreteMathematics: Discrete mathematics
     ProbabilityAndStatistics: Probability and statistics
     MathematicalSoftware: Mathematical software
     InformationTheory: Information theory
     MathematicalAnalysis: Mathematical analysis
     ContinuousMathematics: Continuous mathematics
-    # Information systems
+
+    InformationSystems: Information systems
     DataManagementSystems: Data management systems
     InformationStorageSystems: Information storage systems
     InformationSystemsApplications: Information systems applications
     WorldWideWeb: World Wide Web
     InformationRetrieval: Information retrieval
-    # Security and privacy
+
+    SecurityAndPrivacy: Security and privacy
     Cryptography: Cryptography
     FormalMethodsAndTheoryOfSecurity: Formal methods and theory of security
     SecurityServices: Security services
@@ -76,14 +85,16 @@ CS:
     DatabaseAndStorageSecurity: Database and storage security
     SoftwareAndApplicationSecurity: Software and application security
     HumanAndSocietalAspectsOfSecurityAndPrivacy: Human and societal aspects of security and privacy
-    # Human-centered computing
+
+    HumanCenteredComputing: Human-centered computing
     HumanComputerInteraction: Human computer interaction (HCI)
     InteractionDesign: Interaction design
     CollaborativeAndSocialComputing: Collaborative and social computing
     UbiquitousAndMobileComputing: Ubiquitous and mobile computing
     Visualization: Visualization
     Accessibility: Accessibility
-    # Computing methodologies
+
+    ComputingMethodologies: Computing methodologies
     SymbolicAndAlgebraicManipulation: Symbolic and algebraic manipulation
     ParallelComputingMethodologies: Parallel computing methodologies
     ArtificialIntelligence: Artificial intelligence
@@ -92,7 +103,8 @@ CS:
     ComputerGraphics: Computer graphics
     DistributedComputingMethodologies: Distributed computing methodologies
     ConcurrentComputingMethodologies: Concurrent computing methodologies
-    # Applied computing
+
+    AppliedComputing: Applied computing
     ElectronicCommerce: Electronic commerce
     EnterpriseComputing: Enterprise computing
     PhysicalSciencesAndEngineering: Physical sciences and engineering
@@ -104,7 +116,8 @@ CS:
     OperationsResearch: Operations research
     Education: Education
     DocumentManagementAndTextProcessing: Document management and text processing
-    # Social and professional topics
+
+    SocialAndProfessionalTopics: Social and professional topics
     ProfessionalTopics: Professional topics
     ComputingTechnologyPolicy: "Computing / technology policy"
     UserCharacteristics: User characteristics
