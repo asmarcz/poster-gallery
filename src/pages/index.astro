@@ -27,7 +27,6 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
   <div class="page">
     <section class="intro">
       <h1>Academic posters</h1>
-      <p>Browse posters by field, venue and year. Every poster opens as a PDF, many with their source.</p>
     </section>
 
     {
@@ -211,12 +210,6 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
   .intro h1 {
     font-size: var(--text-display);
     letter-spacing: -0.02em;
-  }
-
-  .intro p {
-    margin-top: 0.75rem;
-    color: var(--muted);
-    font-size: var(--text-lg);
   }
 
   .filters {
