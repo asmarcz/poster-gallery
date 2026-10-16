@@ -17,6 +17,9 @@ const fieldGroups = fields
 const venues = [...new Set(posters.flatMap((p) => p.conference?.name ?? []))].sort((a, b) => a.localeCompare(b));
 const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => b - a);
 const usedLevels = new Set(posters.flatMap((p) => p.thesis?.level ?? []));
+const tagCounts = new Map<string, number>();
+for (const t of posters.flatMap((p) => p.tags ?? [])) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+const tags = [...tagCounts].sort(([a], [b]) => a.localeCompare(b));
 const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(level as ThesisLevel));
 ---
 
@@ -41,7 +44,7 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
             <label class="search">
               <span class="visually-hidden">Search posters</span>
               <Icon name="search" />
-              <input type="search" name="q" placeholder="Search titles, authors, abstracts" autocomplete="off" />
+              <input type="search" name="q" placeholder="Search titles, authors, abstracts, tags" autocomplete="off" />
             </label>
             {fieldGroups.length > 0 && (
               <label>
@@ -97,18 +100,25 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
                 </select>
               </label>
             )}
-            <input type="hidden" name="tag" />
+            {tags.length > 0 && (
+              <label>
+                <span class="visually-hidden">Tag</span>
+                <select name="tag">
+                  <option value="">All tags</option>
+                  {tags.map(([tag, n]) => (
+                    <option value={tag}>
+                      {tag} ({n})
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
           </form>
 
           <div class="status">
             <p aria-live="polite" id="count">
               {posters.length} {posters.length === 1 ? "poster" : "posters"}
             </p>
-            <button type="button" class="tag-chip" id="tag-chip" hidden>
-              <span />
-              <Icon name="x" size={14} />
-              <span class="visually-hidden">Remove tag filter</span>
-            </button>
             <button type="button" class="clear" id="clear" hidden>
               Clear filters
             </button>
@@ -136,9 +146,7 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
     const cards = [...document.querySelectorAll<HTMLElement>("#grid > li")];
     const count = document.querySelector("#count")!;
     const clear = document.querySelector<HTMLButtonElement>("#clear")!;
-    const tagChip = document.querySelector<HTMLButtonElement>("#tag-chip")!;
     const noResults = document.querySelector<HTMLElement>("#no-results")!;
-    const tagInput = form.elements.namedItem("tag") as HTMLInputElement;
     const names = ["q", "field", "venue", "year", "thesis", "tag"] as const;
 
     const control = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
@@ -177,8 +185,6 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
       count.textContent = `${shown} ${shown === 1 ? "poster" : "posters"}`;
       noResults.hidden = shown > 0;
       clear.hidden = !names.some((n) => value(n));
-      tagChip.hidden = !tag;
-      tagChip.querySelector("span")!.textContent = `Tag: ${tag}`;
 
       const next = new URLSearchParams();
       for (const n of names) if (value(n)) next.set(n, value(n));
@@ -188,13 +194,8 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
 
     form.addEventListener("input", apply);
     form.addEventListener("submit", (e) => e.preventDefault());
-    tagChip.addEventListener("click", () => {
-      tagInput.value = "";
-      apply();
-    });
     clear.addEventListener("click", () => {
       form.reset();
-      tagInput.value = "";
       apply();
     });
     apply();
@@ -266,12 +267,13 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
   @media (min-width: 48rem) {
     .filters label:not(.search) {
       flex: none;
+      max-width: 14rem;
     }
   }
 
-  .search {
+  .filters .search {
     position: relative;
-    flex: 1 1 18rem;
+    flex: 1 1 100%;
     color: var(--muted);
   }
 
@@ -314,17 +316,6 @@ const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(l
 
   .status button[hidden] {
     display: none;
-  }
-
-  .tag-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    min-height: 1.75rem;
-    padding: 0 0.625rem;
-    border-radius: 999px;
-    background: var(--surface) !important;
-    color: var(--text) !important;
   }
 
   .clear:hover {
