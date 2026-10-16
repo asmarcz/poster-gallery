@@ -1,6 +1,6 @@
 ---
 import { authorsShort, thumbSrc, thumbSrcset, venueLine, type Poster } from "../lib/posters";
-import { field } from "../lib/taxonomy";
+import { matchingFields } from "../lib/taxonomy";
 import { url } from "../site";
 
 interface Props {
@@ -9,8 +9,9 @@ interface Props {
 
 const { poster: p } = Astro.props;
 
-// Each subfield also matches its parent, so filtering by "CS" finds "CS/NetworkProtocols".
-const fieldIds = [...new Set((p.fields ?? []).flatMap((id) => [id, field(id).root]))];
+// A poster also matches broader fields, so filtering by "CS" or by the ACM concept
+// "CS/ACMCCS/SoftwareAndItsEngineering" finds one filed under any concept below it.
+const fieldIds = [...new Set((p.fields ?? []).flatMap(matchingFields))];
 const searchText = [
   p.title,
   ...(p.authors ?? []).flatMap((a) => [a.name, a.affiliation]),

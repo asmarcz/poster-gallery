@@ -42,8 +42,8 @@ authors:                     # in the order on the poster
     orcid: 0000-0002-1825-0097   # without https://orcid.org/
   - Daniel Okafor            # a name alone works too
 
-fields:                      # ids from taxonomy.yml
-  - CS/SoftwareNotationsAndTools
+fields:                      # ids from taxonomy.yml or acm-ccs.yml
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/Compilers/JustInTimeCompilers
 
 tags:                        # free keywords, lowercase
   - type inference
@@ -75,7 +75,7 @@ Reuse existing spellings where you can. For example:
 
 | Field | Tags |
 |---|---|
-| `CS/SoftwareNotationsAndTools` | `programming languages`, `type inference`, `compilers` |
+| `CS/ACMCCS/…/GeneralProgrammingLanguages` | `type inference`, `Rust`, `notebooks` |
 | `Biology/Genetics` | `CRISPR`, `single-cell RNA-seq`, `Arabidopsis thaliana` |
 | `Chemistry` | `catalysis`, `perovskites`, `NMR spectroscopy` |
 | `Physics` | `quantum optics`, `Monte Carlo simulation` |
@@ -93,6 +93,12 @@ repository.
 Fields come from [taxonomy.yml](taxonomy.yml): a top-level id like `Biology` or a subfield
 like `Biology/Ecology`. Pick the most specific one. If none fits, add it to `taxonomy.yml` in
 the same pull request.
+
+Computer Science uses the [ACM Computing Classification System](https://dl.acm.org/ccs),
+listed in [acm-ccs.yml](acm-ccs.yml). Each id is the concept's path in the ACM tree, prefixed
+with `CS/`. If the poster's paper has CCS concepts (`\ccsdesc{Software and its
+engineering~Just-in-time compilers}` in the ACM LaTeX template), use those; otherwise pick
+the most specific concepts that fit. Several fields are fine.
 
 Agents: take the metadata from the PDF, and ask the author for anything it doesn't show
 (conference, year, source, repository) rather than guessing.

@@ -1,126 +1,15 @@
 # Research fields a poster can be filed under.
 #
 # A poster refers to a field by its id: either a top-level key ("Biology")
-# or a key and one of its subfields ("CS/SoftwareNotationsAndTools").
+# or a key and one of its subfields ("Biology/Ecology").
 # To add a field, add it here in the same pull request as the poster.
 # Ids use PascalCase with no spaces; `label` is what the site shows.
 
-# Subfields are the first- and second-level concepts of the ACM Computing Classification
-# System (2012), https://dl.acm.org/ccs: each broad class is followed by its concepts.
-# Use a broad class when no concept fits. Finer ACM concepts, like "programming languages",
-# go in tags.
+# Computer Science subfields are the ACM Computing Classification System, listed in
+# acm-ccs.yml, with ids like "CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools".
+# Subfields added here are used alongside them.
 CS:
   label: Computer Science
-  subfields:
-    GeneralAndReference: General and reference
-    DocumentTypes: Document types
-    CrossComputingToolsAndTechniques: Cross-computing tools and techniques
-
-    Hardware: Hardware
-    PrintedCircuitBoards: Printed circuit boards
-    CommunicationHardwareInterfacesAndStorage: "Communication hardware, interfaces and storage"
-    IntegratedCircuits: Integrated circuits
-    VeryLargeScaleIntegrationDesign: Very large scale integration design
-    PowerAndEnergy: Power and energy
-    ElectronicDesignAutomation: Electronic design automation
-    HardwareValidation: Hardware validation
-    HardwareTest: Hardware test
-    Robustness: Robustness
-    EmergingTechnologies: Emerging technologies
-
-    ComputerSystemsOrganization: Computer systems organization
-    Architectures: Architectures
-    EmbeddedAndCyberPhysicalSystems: Embedded and cyber-physical systems
-    RealTimeSystems: Real-time systems
-    DependableAndFaultTolerantSystemsAndNetworks: Dependable and fault-tolerant systems and networks
-
-    Networks: Networks
-    NetworkArchitectures: Network architectures
-    NetworkProtocols: Network protocols
-    NetworkComponents: Network components
-    NetworkAlgorithms: Network algorithms
-    NetworkPerformanceEvaluation: Network performance evaluation
-    NetworkProperties: Network properties
-    NetworkServices: Network services
-    NetworkTypes: Network types
-
-    SoftwareAndItsEngineering: Software and its engineering
-    SoftwareOrganizationAndProperties: Software organization and properties
-    SoftwareNotationsAndTools: Software notations and tools
-    SoftwareCreationAndManagement: Software creation and management
-
-    TheoryOfComputation: Theory of computation
-    ModelsOfComputation: Models of computation
-    FormalLanguagesAndAutomataTheory: Formal languages and automata theory
-    ComputationalComplexityAndCryptography: Computational complexity and cryptography
-    Logic: Logic
-    DesignAndAnalysisOfAlgorithms: Design and analysis of algorithms
-    RandomnessGeometryAndDiscreteStructures: "Randomness, geometry and discrete structures"
-    TheoryAndAlgorithmsForApplicationDomains: Theory and algorithms for application domains
-    SemanticsAndReasoning: Semantics and reasoning
-
-    MathematicsOfComputing: Mathematics of computing
-    DiscreteMathematics: Discrete mathematics
-    ProbabilityAndStatistics: Probability and statistics
-    MathematicalSoftware: Mathematical software
-    InformationTheory: Information theory
-    MathematicalAnalysis: Mathematical analysis
-    ContinuousMathematics: Continuous mathematics
-
-    InformationSystems: Information systems
-    DataManagementSystems: Data management systems
-    InformationStorageSystems: Information storage systems
-    InformationSystemsApplications: Information systems applications
-    WorldWideWeb: World Wide Web
-    InformationRetrieval: Information retrieval
-
-    SecurityAndPrivacy: Security and privacy
-    Cryptography: Cryptography
-    FormalMethodsAndTheoryOfSecurity: Formal methods and theory of security
-    SecurityServices: Security services
-    IntrusionAnomalyDetectionAndMalwareMitigation: "Intrusion/anomaly detection and malware mitigation"
-    SecurityInHardware: Security in hardware
-    SystemsSecurity: Systems security
-    NetworkSecurity: Network security
-    DatabaseAndStorageSecurity: Database and storage security
-    SoftwareAndApplicationSecurity: Software and application security
-    HumanAndSocietalAspectsOfSecurityAndPrivacy: Human and societal aspects of security and privacy
-
-    HumanCenteredComputing: Human-centered computing
-    HumanComputerInteraction: Human computer interaction (HCI)
-    InteractionDesign: Interaction design
-    CollaborativeAndSocialComputing: Collaborative and social computing
-    UbiquitousAndMobileComputing: Ubiquitous and mobile computing
-    Visualization: Visualization
-    Accessibility: Accessibility
-
-    ComputingMethodologies: Computing methodologies
-    SymbolicAndAlgebraicManipulation: Symbolic and algebraic manipulation
-    ParallelComputingMethodologies: Parallel computing methodologies
-    ArtificialIntelligence: Artificial intelligence
-    MachineLearning: Machine learning
-    ModelingAndSimulation: Modeling and simulation
-    ComputerGraphics: Computer graphics
-    DistributedComputingMethodologies: Distributed computing methodologies
-    ConcurrentComputingMethodologies: Concurrent computing methodologies
-
-    AppliedComputing: Applied computing
-    ElectronicCommerce: Electronic commerce
-    EnterpriseComputing: Enterprise computing
-    PhysicalSciencesAndEngineering: Physical sciences and engineering
-    LifeAndMedicalSciences: Life and medical sciences
-    LawSocialAndBehavioralSciences: "Law, social and behavioral sciences"
-    ComputerForensics: Computer forensics
-    ArtsAndHumanities: Arts and humanities
-    ComputersInOtherDomains: Computers in other domains
-    OperationsResearch: Operations research
-    Education: Education
-    DocumentManagementAndTextProcessing: Document management and text processing
-
-    SocialAndProfessionalTopics: Social and professional topics
-    ProfessionalTopics: Professional topics
-    ComputingTechnologyPolicy: "Computing / technology policy"
-    UserCharacteristics: User characteristics
 
 Mathematics:
   label: Mathematics
