@@ -9,7 +9,7 @@ interface Props {
 
 const { poster: p } = Astro.props;
 
-// Each subfield also matches its parent, so filtering by "CS" finds "CS/Networks".
+// Each subfield also matches its parent, so filtering by "CS" finds "CS/NetworkProtocols".
 const fieldIds = [...new Set((p.fields ?? []).flatMap((id) => [id, field(id).root]))];
 const searchText = [
   p.title,
