@@ -133,7 +133,7 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
             )
           }
           {
-            p.repository && (
+            !abstract && p.repository && (
               <a class="button" href={p.repository}>
                 <Icon name="repo" />
                 Repository
@@ -163,6 +163,17 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
                   {abstractSource.label}
                 </a>
               )}
+            </div>
+          )
+        }
+        {/* The repository belongs to the whole project, so it sits apart from the poster and abstract rows. */}
+        {
+          abstract && p.repository && (
+            <div class="actions part">
+              <a class="button" href={p.repository}>
+                <Icon name="repo" />
+                Repository
+              </a>
             </div>
           )
         }
