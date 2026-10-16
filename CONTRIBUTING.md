@@ -29,6 +29,7 @@ authors:                     # in the order on the poster
   - name: Mira Svoboda
     affiliation: Example University
     url: https://example.org/~mira
+    orcid: 0000-0002-1825-0097   # without https://orcid.org/
   - Daniel Okafor            # a name alone works too
 
 fields:                      # ids from taxonomy.yml
@@ -44,6 +45,11 @@ conference:                  # or just: conference: SPLASH 2026
 
 year: 2026
 
+thesis:                      # if the poster presents a thesis; or just: thesis: master
+  level: master              # bachelor, master or doctoral
+  title: Type Inference for Notebooks
+  url: https://example.org/theses/12345
+
 abstract: |                  # blank line between paragraphs
   First paragraph.
 
@@ -53,6 +59,23 @@ paper: https://example.org/paper.pdf
 doi: 10.1145/1234567.1234568    # without https://doi.org/
 repository: https://github.com/you/project
 ```
+
+Tags are free keywords for what the field doesn't say: methods, organisms, materials, topics.
+Reuse existing spellings where you can. For example:
+
+| Field | Tags |
+|---|---|
+| `CS/ProgrammingLanguages` | `type inference`, `Rust`, `compilers` |
+| `Biology/Genetics` | `CRISPR`, `single-cell RNA-seq`, `Arabidopsis thaliana` |
+| `Chemistry` | `catalysis`, `perovskites`, `NMR spectroscopy` |
+| `Physics` | `quantum optics`, `Monte Carlo simulation` |
+| `EarthSciences` | `glaciology`, `remote sensing`, `urban heat islands` |
+| `Medicine` | `randomized controlled trial`, `sepsis` |
+| `Humanities` | `medieval manuscripts`, `digital humanities` |
+
+Thesis levels don't depend on the country: Bc. and BSc are `bachelor`; Mgr., Ing. and MSc are
+`master`; Ph.D. is `doctoral`. `url` points to the thesis itself, e.g. in your university's
+repository.
 
 `repository` is the project's own repository, which may have moved on since the poster;
 `source/` is the poster as submitted. Either, both or neither is fine.

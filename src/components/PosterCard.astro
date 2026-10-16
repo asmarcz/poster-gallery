@@ -31,6 +31,7 @@ const venue = venueLine(p);
   data-fields={fieldIds.join(" ")}
   data-venue={p.conference?.name ?? ""}
   data-year={p.year ?? ""}
+  data-thesis={p.thesis?.level ?? ""}
   data-tags={JSON.stringify(p.tags ?? [])}
 >
   <a href={url(`posters/${p.slug}/`)}>

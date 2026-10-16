@@ -14,6 +14,8 @@ and merging to a maintainer.
 - Title and authors match the poster, authors in the same order and spelling.
 - Affiliations, conference and year match the poster. The conference name is written the
   same way as on other posters from that event (`grep -rh "name:" posters/*/poster.yml`).
+- ORCID iDs belong to the named authors (open the link).
+- `thesis`, if set, has the right level for the degree, and its link leads to that thesis.
 - Links and the DOI resolve to what they claim.
 
 ## Tags and fields

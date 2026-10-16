@@ -4,6 +4,7 @@ import PosterCard from "../components/PosterCard.astro";
 import Base from "../layouts/Base.astro";
 import { getPosters } from "../lib/posters";
 import { field, fields } from "../lib/taxonomy";
+import { thesisLevels, type ThesisLevel } from "../lib/thesis";
 import { contributingUrl } from "../site";
 
 const posters = await getPosters();
@@ -15,6 +16,8 @@ const fieldGroups = fields
   .map((root) => ({ root, children: fields.filter((f) => f.root === root.id && f.id !== root.id && usedFields.has(f.id)) }));
 const venues = [...new Set(posters.flatMap((p) => p.conference?.name ?? []))].sort((a, b) => a.localeCompare(b));
 const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => b - a);
+const usedLevels = new Set(posters.flatMap((p) => p.thesis?.level ?? []));
+const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(level as ThesisLevel));
 ---
 
 <Base>
@@ -82,6 +85,18 @@ const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => 
                 </select>
               </label>
             )}
+            {levels.length > 0 && (
+              <label>
+                <span class="visually-hidden">Thesis</span>
+                <select name="thesis">
+                  <option value="">All types</option>
+                  <option value="any">Any thesis</option>
+                  {levels.map(([level, label]) => (
+                    <option value={level}>{label}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <input type="hidden" name="tag" />
           </form>
 
@@ -124,7 +139,7 @@ const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => 
     const tagChip = document.querySelector<HTMLButtonElement>("#tag-chip")!;
     const noResults = document.querySelector<HTMLElement>("#no-results")!;
     const tagInput = form.elements.namedItem("tag") as HTMLInputElement;
-    const names = ["q", "field", "venue", "year", "tag"] as const;
+    const names = ["q", "field", "venue", "year", "thesis", "tag"] as const;
 
     const control = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
 
@@ -142,6 +157,7 @@ const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => 
       const fieldId = value("field");
       const venue = value("venue");
       const year = value("year");
+      const thesis = value("thesis");
       const tag = value("tag");
 
       let shown = 0;
@@ -152,6 +168,7 @@ const years = [...new Set(posters.flatMap((p) => p.year ?? []))].sort((a, b) => 
           (!fieldId || d.fields!.split(" ").includes(fieldId)) &&
           (!venue || d.venue === venue) &&
           (!year || d.year === year) &&
+          (!thesis || (thesis === "any" ? d.thesis !== "" : d.thesis === thesis)) &&
           (!tag || (JSON.parse(d.tags!) as string[]).includes(tag));
         card.hidden = !match;
         if (match) shown++;

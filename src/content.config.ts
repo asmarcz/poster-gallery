@@ -2,20 +2,51 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { fieldIds } from "./lib/taxonomy";
+import { thesisLevels } from "./lib/thesis";
 
-// Authors and conferences may be written as a plain name; both forms become objects.
-const nameOrObject = <T extends z.ZodType>(schema: T) =>
-  z.preprocess((v) => (typeof v === "string" ? { name: v } : v), schema);
+// Authors, conferences and theses may be written as a single value; both forms become objects.
+const shorthand = <T extends z.ZodType>(key: string, schema: T) =>
+  z.preprocess((v) => (typeof v === "string" ? { [key]: v } : v), schema);
 
-const author = nameOrObject(
+// ORCID iDs end in an ISO 7064 mod 11-2 check digit, which catches most typos.
+function validOrcid(id: string): boolean {
+  const digits = id.replaceAll("-", "");
+  let total = 0;
+  for (const d of digits.slice(0, -1)) total = (total + Number(d)) * 2;
+  const check = (12 - (total % 11)) % 11;
+  return digits.at(-1) === (check === 10 ? "X" : String(check));
+}
+
+const author = shorthand(
+  "name",
   z.strictObject({
     name: z.string().min(1),
     affiliation: z.string().min(1).optional(),
     url: z.url().optional(),
+    orcid: z
+      .string()
+      .regex(/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/, {
+        error: 'Write the bare ORCID iD, e.g. "0000-0002-1825-0097", not a URL.',
+        abort: true,
+      })
+      .refine(validOrcid, "This ORCID iD has a wrong check digit; check it for typos.")
+      .optional(),
   }),
 );
 
-const conference = nameOrObject(
+const thesis = shorthand(
+  "level",
+  z.strictObject({
+    level: z.enum(Object.keys(thesisLevels) as [keyof typeof thesisLevels], {
+      error: () => `Thesis level must be one of: ${Object.keys(thesisLevels).join(", ")}.`,
+    }),
+    title: z.string().min(1).optional(),
+    url: z.url().optional(),
+  }),
+);
+
+const conference = shorthand(
+  "name",
   z.strictObject({
     name: z.string().min(1),
     location: z.string().min(1).optional(),
@@ -38,6 +69,7 @@ const poster = z.strictObject({
   tags: z.array(z.string().min(1)).optional(),
   conference: conference.optional(),
   year: z.int().min(1900).max(2100).optional(),
+  thesis: thesis.optional(),
   abstract: z.string().min(1).optional(),
   paper: z.url().optional(),
   doi: z

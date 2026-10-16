@@ -12,6 +12,7 @@ import {
   type Poster,
 } from "../../lib/posters";
 import { groupFields } from "../../lib/taxonomy";
+import { thesisLevels } from "../../lib/thesis";
 import { url } from "../../site";
 
 export async function getStaticPaths() {
@@ -32,7 +33,7 @@ const cite = bibtex(p, pageUrl ?? "");
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
 const affiliations = [...new Set((p.authors ?? []).flatMap((a) => a.affiliation ?? []))];
 const numbered = affiliations.length > 1;
-const hasDetails = Boolean(p.conference || p.year || p.tags || p.paper || p.doi);
+const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.paper || p.doi);
 ---
 
 <Base title={p.title} description={p.abstract?.slice(0, 200)} image={thumbSrc(p, 960)}>
@@ -83,6 +84,17 @@ const hasDetails = Boolean(p.conference || p.year || p.tags || p.paper || p.doi)
                   <>
                     {a.url ? <a href={a.url}>{a.name}</a> : <span>{a.name}</span>}
                     {numbered && a.affiliation && <sup>{affiliations.indexOf(a.affiliation) + 1}</sup>}
+                    {a.orcid && (
+                      <a class="orcid" href={`https://orcid.org/${a.orcid}`} title={`ORCID ${a.orcid}`}>
+                        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                          <circle cx="8" cy="8" r="8" fill="#a6ce39" />
+                          <text x="8" y="11.2" fill="#fff" font-family="Arial, sans-serif" font-size="8.5" font-weight="700" text-anchor="middle">
+                            iD
+                          </text>
+                        </svg>
+                        <span class="visually-hidden">ORCID iD of {a.name}</span>
+                      </a>
+                    )}
                     {i < p.authors!.length - 1 && ", "}
                   </>
                 ))}
@@ -160,6 +172,25 @@ const hasDetails = Boolean(p.conference || p.year || p.tags || p.paper || p.doi)
                 <>
                   <dt>Year</dt>
                   <dd class="num">{p.year}</dd>
+                </>
+              )
+            }
+            {
+              p.thesis && (
+                <>
+                  <dt>Thesis</dt>
+                  <dd>
+                    {p.thesis.title ? (
+                      <>
+                        {thesisLevels[p.thesis.level]}:{" "}
+                        {p.thesis.url ? <a href={p.thesis.url}>{p.thesis.title}</a> : p.thesis.title}
+                      </>
+                    ) : p.thesis.url ? (
+                      <a href={p.thesis.url}>{thesisLevels[p.thesis.level]}</a>
+                    ) : (
+                      thesisLevels[p.thesis.level]
+                    )}
+                  </dd>
                 </>
               )
             }
@@ -328,6 +359,16 @@ const hasDetails = Boolean(p.conference || p.year || p.tags || p.paper || p.doi)
 
   .authors a {
     color: inherit;
+  }
+
+  .orcid {
+    display: inline-block;
+    margin-left: 0.25em;
+    vertical-align: -0.1em;
+  }
+
+  .orcid svg {
+    display: block;
   }
 
   sup {
