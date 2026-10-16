@@ -22,11 +22,11 @@ Keep the PDF under 50 MB. Whatever tool you made the poster in, export it to PDF
 |---|---|
 | LaTeX, Typst, Inkscape, … | the source files in `source/` |
 | PowerPoint, Word, Keynote, LibreOffice | the `.pptx`, `.docx`, … file in `source/` |
-| Google Slides or Docs | a link in `editable:` (set sharing to *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in `source/` |
-| Canva, Figma, Overleaf | a view link in `editable:`, plus an export in `source/` if the tool has one |
+| Google Slides or Docs | the link as `repository:` (sharing: *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in `source/` |
+| Canva, Figma, Overleaf | a view link as `repository:`, plus an export in `source/` if the tool has one |
 
-A link lets others make an exact copy; the file in `source/` stays even if the link stops
-working. Google links get a "make a copy" button automatically.
+The link lets others make an exact copy; the file in `source/` stays even if the link stops
+working.
 
 ## poster.yml
 
@@ -67,8 +67,7 @@ abstract: |                  # blank line between paragraphs
 
 paper: https://example.org/paper.pdf
 doi: 10.1145/1234567.1234568    # without https://doi.org/
-repository: https://github.com/you/project
-editable: https://docs.google.com/presentation/d/…/edit   # poster in an online editor
+repository: https://github.com/you/project   # or a Google Slides, Overleaf, … link
 ```
 
 Tags are free keywords for what the field doesn't say: methods, organisms, materials, topics.

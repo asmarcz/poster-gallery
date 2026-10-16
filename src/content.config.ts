@@ -77,7 +77,6 @@ const poster = z.strictObject({
     .regex(/^10\.\d{4,9}\/\S+$/, 'Write the bare DOI, e.g. "10.1145/3689492.3690052", not a URL.')
     .optional(),
   repository: z.url().optional(),
-  editable: z.url().optional(),
 });
 
 export const collections = {
