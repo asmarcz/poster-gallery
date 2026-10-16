@@ -2,8 +2,8 @@
 
 One poster per pull request. You can hand this file and your poster to a coding agent.
 
-The folders in [posters/](posters/) are working examples: copy from them, and compare your
-submission with them before opening the pull request.
+Before opening the pull request, compare your submission with the existing ones in
+[posters/](posters/), for inspiration and to check you wrote things the same way.
 
 ## Files
 
