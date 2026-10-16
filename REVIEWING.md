@@ -1,49 +1,40 @@
 # Reviewing a poster
 
-CI checks the folder, that the PDF exists and that `poster.yml` is valid. This list is
-everything it can't check. Agents: report problems with file and line, and leave approving
-and merging to a maintainer.
+CI checks the folder and that `poster.yml` is valid. Check the rest by hand. Agents: report
+problems with file and line, and leave approving and merging to a maintainer.
 
 ## Scope
 
-- The PR touches one folder in `posters/`, plus `taxonomy.yml` if it adds a field.
-- The slug is specific: `gradual-notebooks-splash-2026`, not `my-poster`.
+- One folder in `posters/`, plus `taxonomy.yml` if it adds a field.
+- A specific slug: `gradual-notebooks-splash-2026`, not `my-poster`.
 
-## Metadata matches the PDF
+## Metadata
 
-- Title and authors match the poster, authors in the same order and spelling.
-- Affiliations, conference and year match the poster. The conference name is written the
-  same way as on other posters from that event (`grep -rh "name:" posters/*/poster.yml`).
-- ORCID iDs belong to the named authors (open the link).
-- `thesis`, if set, has the right level for the degree, and its link leads to that thesis.
+- Title, authors (order and spelling), affiliations, conference and year match the poster.
+- The conference name matches other posters from the same event
+  (`grep -rh "name:" posters/*/poster.yml`).
+- ORCID iDs belong to the named authors.
+- `thesis` has the right level, and its link leads to the thesis.
 - Links and the DOI resolve to what they claim.
-- Every value the PR description says was looked up online is checked against its source
-  with extra care; values that look looked up but are not declared are asked about.
+- Values the PR says were looked up online match their sources. Ask about any that look
+  looked up but aren't declared.
 
-## Tags and fields
+## Fields and tags
 
-Tags are free text, so they need a careful look, or the filters fill with near-duplicates.
+- `fields` uses the most specific entries, and matches the paper's ACM CCS concepts, arXiv
+  categories or Springer subjects where it has them.
+- Tags are lowercase (except proper nouns), don't repeat the field, and don't duplicate an
+  existing tag under another spelling (`grep -rh -A20 "^tags:" posters/*/poster.yml`).
+- A new `taxonomy.yml` field is really missing, sits under the right parent, and has a
+  PascalCase id.
 
-- Each tag is lowercase (unless a proper noun or acronym) and doesn't duplicate an existing
-  tag under another spelling: `type inference`, not `Type-Inference`. Compare with
-  `grep -rh -A20 "^tags:" posters/*/poster.yml`.
-- Tags don't repeat the field.
-- `fields` uses the most specific fitting id.
-- ACM CCS fields match the paper's CCS concepts, arXiv fields the preprint's categories, and
-  Springer fields the SpringerLink subjects, if there are any.
-- A new entry in `taxonomy.yml` is really missing, sits under the right parent, has a
-  PascalCase id and a spelled-out label.
+## Files and links
 
-## Files
-
-- `poster.pdf` is the final poster, opens, and is under 50 MB.
-- `abstract.pdf`, if present, is the extended abstract of this poster, and the DOI belongs
-  to it.
-- `poster-source/` and `abstract-source/`, if present, are the sources of the matching PDF,
-  without build leftovers, secrets or personal data.
-- `artifact` links to the research the poster presents, not to the poster's own source.
-- `editable`, if present, points to a proprietary online tool (Google Slides, Canva, …), opens
-  the same poster, and is read-only for anyone with the link. A link that grants edit access
-  must be changed before merging. Sources that can be committed (LaTeX, Typst, `.pptx`, …)
-  belong in `poster-source/` instead.
+- `poster.pdf` is the final poster and is under 50 MB.
+- `abstract.pdf` is this poster's extended abstract, and the DOI belongs to it.
+- The `-source/` folders hold the sources of their PDFs, without build leftovers, secrets or
+  personal data.
+- `artifact` points to the research, not to the poster's source.
+- `editable` points to an online-only tool (Google Slides, Canva, …), shows the same poster,
+  and is view-only.
 - The authors agree to publishing it, and nothing is under embargo.

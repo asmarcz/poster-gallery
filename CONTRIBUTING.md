@@ -1,7 +1,6 @@
 # Adding a poster
 
-One poster per pull request. If you use a coding agent, you can hand it this file and your
-poster and let it do the rest.
+One poster per pull request. You can hand this file and your poster to a coding agent.
 
 ## Files
 
@@ -9,31 +8,20 @@ poster and let it do the rest.
 posters/<slug>/
   poster.yml        metadata (required)
   poster.pdf        the poster as presented (required)
-  poster-source/    what poster.pdf was made from (optional)
-  abstract.pdf      the extended abstract, e.g. from the proceedings (optional)
-  abstract-source/  what abstract.pdf was made from (optional)
+  poster-source/    what poster.pdf was made from
+  abstract.pdf      the extended abstract, e.g. from the proceedings
+  abstract-source/  what abstract.pdf was made from
 ```
 
-The slug is the poster's URL: lowercase words joined by hyphens, specific enough to stay
-unique, e.g. `gradual-notebooks-splash-2026`.
+The slug is the poster's URL, e.g. `gradual-notebooks-splash-2026`. Keep each PDF under 50 MB.
 
-Keep each PDF under 50 MB. Whatever tool you made them in, export them to PDF, and share the
-source too, so others can see how they were made:
-
-| Made in | Share |
-|---|---|
-| LaTeX, Typst, Inkscape, … (Overleaf included) | the source files in the `-source/` folder |
-| PowerPoint, Word, Keynote, LibreOffice | the `.pptx`, `.docx`, … file in the `-source/` folder |
-| Google Slides or Docs | the link as `editable:` (sharing: *Anyone with the link: Viewer*), plus a `.pptx`/`.docx` export in the `-source/` folder |
-| Canva, Figma | a view link as `editable:`, plus an export in the `-source/` folder if the tool has one |
-
-`editable` is only for proprietary online tools whose files can't be committed as they are.
-The link lets others make an exact copy (Google links open Google's "make a copy" page); the
-exported file stays even if the link stops working.
+Commit the source files in the `-source/` folders: LaTeX, Typst, `.pptx`, `.docx`, SVG, …
+For Google Slides, Canva and other online-only tools, put a view link in `editable:` and an
+export in `poster-source/`.
 
 ## poster.yml
 
-Only `title` is required. Leave out keys you have no value for.
+Only `title` is required. Leave out what you don't have.
 
 ```yaml
 title: Incremental Type Inference for Gradually Typed Notebooks
@@ -42,14 +30,14 @@ authors:                     # in the order on the poster
   - name: Mira Svoboda
     affiliation: Example University
     url: https://example.org/~mira
-    orcid: 0000-0002-1825-0097   # without https://orcid.org/
+    orcid: 0000-0002-1825-0097
   - Daniel Okafor            # a name alone works too
 
-fields:                      # ids from taxonomy.yml and its schemes, see below
+fields:                      # see Fields below
   - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/Compilers/JustInTimeCompilers
   - CS/arXiv/cs.PL
 
-tags:                        # free keywords, lowercase
+tags:                        # see Tags below
   - type inference
 
 conference:                  # or just: conference: SPLASH 2026
@@ -59,82 +47,63 @@ conference:                  # or just: conference: SPLASH 2026
 
 year: 2026
 
-thesis:                      # if the poster presents a thesis; or just: thesis: master
+thesis:                      # or just: thesis: master
   level: master              # bachelor, master or doctoral
   title: Type Inference for Notebooks
   url: https://example.org/theses/12345
 
-abstract: |                  # blank line between paragraphs
+abstract: |                  # short summary for the page
   First paragraph.
 
   Second paragraph.
 
-paper: https://example.org/paper.pdf   # a related full paper, if any
-doi: 10.1145/1234567.1234568    # usually the extended abstract's; without https://doi.org/
-artifact: https://github.com/you/tool   # the code, data or tool the poster presents
-editable: https://docs.google.com/presentation/d/…/edit   # only for Google Slides, Canva, …
+paper: https://doi.org/10.1145/1234567.1234568   # any link to the paper
+doi: 10.1145/1234567.1234568                      # usually the extended abstract's
+artifact: https://github.com/you/tool             # the tool, code or data the poster presents
+editable: https://docs.google.com/presentation/d/…/edit   # Google Slides, Canva, …
 ```
 
-Tags are free keywords for what the field doesn't say: methods, organisms, materials, topics.
-Reuse existing spellings where you can. For example:
+## Fields
+
+Use ids from [taxonomy.yml](taxonomy.yml) and the schemes in [taxonomy/](taxonomy/):
+
+- Springer subjects, for every field: `Biology/SpringerLifeSciences/Ecology/LandscapeEcology`.
+  Reuse the subjects on the paper's SpringerLink page.
+- [ACM CCS](https://dl.acm.org/ccs), for Computer Science:
+  `CS/ACMCCS/SoftwareAndItsEngineering/…/JustInTimeCompilers`. Reuse the paper's `\ccsdesc`.
+- [arXiv](https://arxiv.org/category_taxonomy), for Computer Science: `CS/arXiv/cs.PL`.
+  Reuse the preprint's categories.
+
+Pick the most specific entries; several are fine. If nothing fits, add a field to
+`taxonomy.yml` in the same pull request.
+
+## Tags
+
+Free keywords for what the fields don't cover. Lowercase, and reuse existing spellings.
 
 | Field | Tags |
 |---|---|
-| `CS/ACMCCS/…/GeneralProgrammingLanguages` | `type inference`, `Rust`, `notebooks` |
-| `Biology/Genetics` | `CRISPR`, `single-cell RNA-seq`, `Arabidopsis thaliana` |
-| `Chemistry` | `catalysis`, `perovskites`, `NMR spectroscopy` |
-| `Physics` | `quantum optics`, `Monte Carlo simulation` |
-| `EarthSciences` | `glaciology`, `remote sensing`, `urban heat islands` |
-| `Medicine` | `randomized controlled trial`, `sepsis` |
-| `Humanities` | `medieval manuscripts`, `digital humanities` |
+| Computer Science | `type inference`, `Rust`, `notebooks` |
+| Biology | `CRISPR`, `single-cell RNA-seq`, `Arabidopsis thaliana` |
+| Chemistry | `catalysis`, `perovskites`, `NMR spectroscopy` |
+| Physics | `quantum optics`, `Monte Carlo simulation` |
+| Earth Sciences | `glaciology`, `remote sensing`, `urban heat islands` |
+| Medicine | `randomized controlled trial`, `sepsis` |
+| Humanities | `medieval manuscripts`, `digital humanities` |
 
-Thesis levels don't depend on the country: Bc. and BSc are `bachelor`; Mgr., Ing. and MSc are
-`master`; Ph.D. is `doctoral`. `url` points to the thesis itself, e.g. in your university's
-repository.
+## For agents
 
-`artifact` links to what the research produced: the tool, library, dataset or experiments the
-poster is about, on any host. It is never the poster's own source: that goes in the `-source/`
-folders (files) or `editable` (a link). Any combination of the three is fine.
+Take the metadata from the PDFs and ask the author for the rest. If you look anything up
+online (DOI, conference URL, ORCID), tell the author and list each value with its source in
+the pull request description.
 
-The `abstract:` key is a short summary shown on the page; `abstract.pdf` is the full extended
-abstract. A poster usually has one DOI, the extended abstract's, and it goes in `doi:`.
+## Submit
 
-Fields come from [taxonomy.yml](taxonomy.yml): a top-level id like `Biology` or a subfield
-like `Biology/Ecology`. Pick the most specific one. If none fits, add it to `taxonomy.yml` in
-the same pull request.
-
-Fields also use established classification schemes, listed under `schemes:` in
-`taxonomy.yml`, with their entries in [taxonomy/](taxonomy/). An id from a scheme is the
-field, the scheme and the entry's path:
-
-- Every field has the Springer Nature subjects of its disciplines, e.g.
-  `Biology/SpringerLifeSciences/Ecology/LandscapeEcology`. If the paper was published by
-  Springer, use the subjects listed on its SpringerLink page.
-- Computer Science also has [ACM CCS](https://dl.acm.org/ccs), in
-  [taxonomy/acm-ccs.yml](taxonomy/acm-ccs.yml):
-  `CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/Compilers/JustInTimeCompilers`.
-  If the paper has CCS concepts (`\ccsdesc{Software and its engineering~Just-in-time
-  compilers}` in the ACM LaTeX template), use those.
-- Computer Science also has [arXiv](https://arxiv.org/category_taxonomy), in
-  [taxonomy/arxiv-cs.yml](taxonomy/arxiv-cs.yml): `CS/arXiv/cs.PL`. If there is an arXiv
-  preprint, use its categories.
-
-Pick the most specific entries that fit; several fields, from several schemes, are fine.
-
-Agents: take the metadata from the PDF, and ask the author for anything it doesn't show
-(conference, year, source, artifact) rather than guessing. You may look up missing
-details online, such as the DOI, the conference's full name and URL, or ORCID iDs, but say so
-explicitly: tell the author, and list every value you found online, with where you found
-it, in the pull request description.
-
-## Check and submit
-
-Fork the repository and add the folder on a branch. `npm run build` fails with an
-explanation if something is wrong (needs Node.js 22+ and `pdftoppm`). CI runs the same check
-on the pull request.
+Fork the repository and add the folder on a branch. `npm run build` checks it (needs
+Node.js 22+ and `pdftoppm`); CI runs the same check.
 
 ```sh
 gh pr create --title "Add poster: <title>" --template .github/PULL_REQUEST_TEMPLATE.md
 ```
 
-Submissions are reviewed by hand before merging ([REVIEWING.md](REVIEWING.md)).
+A maintainer reviews it by hand ([REVIEWING.md](REVIEWING.md)) before merging.
