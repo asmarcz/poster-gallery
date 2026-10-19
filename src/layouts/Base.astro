@@ -30,6 +30,8 @@ const fullTitle = title ? `${title} · ${site.title}` : site.title;
     <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
     <meta name="google-site-verification" content="N-SNDy3MQMc85HDQjiGMvL8limqIu8J1y9CykLKQsdM" />
     <slot name="head" />
+    <!-- Cookieless visit counts; it skips localhost, so local development isn't counted. -->
+    <script is:inline data-goatcounter="https://poster-gallery.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
   </head>
   <body>
     <header class="site-header">

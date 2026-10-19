@@ -52,7 +52,7 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
 
     <article class="layout">
       <div class="preview">
-        <a href={pdfUrl(p)} class="preview-link">
+        <a href={pdfUrl(p)} class="preview-link" data-goatcounter-click={`pdf/${p.slug}`}>
           <img
             class="poster-image"
             src={thumbSrc(p, 960)}
@@ -128,8 +128,8 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
 
         <div class:list={["actions", abstract && "part"]}>
           {abstract && <h2 class="part-label">Poster</h2>}
-          <a class="button primary" href={pdfUrl(p)}>View PDF</a>
-          <a class="button" href={pdfUrl(p)} download={`${p.slug}.pdf`}>
+          <a class="button primary" href={pdfUrl(p)} data-goatcounter-click={`pdf/${p.slug}`}>View PDF</a>
+          <a class="button" href={pdfUrl(p)} download={`${p.slug}.pdf`} data-goatcounter-click={`download/${p.slug}`}>
             <Icon name="download" />
             Download <span class="size">{formatBytes(p.asset.poster.pdfBytes)}</span>
           </a>
@@ -173,10 +173,15 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
               <h2 class="part-label">Extended abstract</h2>
               {abstract.pdf && (
                 <>
-                  <a class="button" href={url(abstract.pdf)}>
+                  <a class="button" href={url(abstract.pdf)} data-goatcounter-click={`abstract-pdf/${p.slug}`}>
                     View PDF
                   </a>
-                  <a class="button" href={url(abstract.pdf)} download={`${p.slug}-abstract.pdf`}>
+                  <a
+                    class="button"
+                    href={url(abstract.pdf)}
+                    download={`${p.slug}-abstract.pdf`}
+                    data-goatcounter-click={`abstract-download/${p.slug}`}
+                  >
                     <Icon name="download" />
                     Download <span class="size">{formatBytes(abstract.pdfBytes!)}</span>
                   </a>
