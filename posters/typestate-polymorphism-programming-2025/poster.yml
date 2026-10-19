@@ -1,0 +1,44 @@
+title: Typestate-oriented Programming with Ad-hoc Polymorphism on the Typestate
+
+authors:
+  - name: Oliver Tušla
+    affiliation: Czech Technical University in Prague
+    orcid: 0009-0003-5459-5820
+
+fields:
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/GeneralProgrammingLanguages/LanguageFeatures/Polymorphism
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/GeneralProgrammingLanguages/LanguageTypes/ObjectOrientedLanguages
+  - CS/arXiv/cs.PL
+
+tags:
+  - typestate
+  - type systems
+
+conference:
+  name: <Programming> 2025
+  location: Prague, Czechia
+  url: https://2025.programming-conference.org/track/programming-2025-SRC
+
+year: 2025
+
+thesis:
+  level: bachelor
+  title: Design and Implementation of Typestate-oriented Programming Language
+  url: https://hdl.handle.net/10467/123517
+
+src:
+  category: undergraduate
+
+abstract: |
+  We present a design of a typestate-oriented programming language. Class instances describe
+  their state using clause declarations, each intended to capture a single property of the
+  class domain. At any point in the program, each clause in scope has a valuation: Holds, Not,
+  or Unknown. Traditional typestate approaches enumerate all possible combinations of
+  properties, resulting in 2ⁿ or 3ⁿ states, an explosion in the number of declarations. Our
+  approach alleviates this problem by allowing users to reason about properties individually.
+
+  Methods manipulate clause valuations. Declarations include a makes list specifying
+  postconditions that must hold after method execution. A method is a set of implementations
+  that differ only in their takes lists, specifying their preconditions. Methods are ad-hoc
+  polymorphic on the state of their receiver and the states of their parameters. This aids
+  code organization, encapsulation, observability and performance.
