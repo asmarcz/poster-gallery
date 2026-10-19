@@ -1,0 +1,33 @@
+title: Understanding Feedback Pollution in the R Programming Language
+
+authors:
+  - name: Filip Říha
+    affiliation: Czech Technical University in Prague
+    orcid: 0009-0009-3933-2997
+
+tags:
+  - R
+  - just-in-time compilation
+  - type feedback
+
+conference:
+  name: IT SPY 2025
+  url: https://www.itspy.cz/thesis/understanding-feedback-pollution-in-the-r-programminglanguage/
+
+displayed:
+  place: Thákurova 7, Prague; block A, 12th floor
+  url: https://pages.fit.cvut.cz/ict/documents/floorplans/th-overview-1-parsed.pdf
+
+year: 2025
+
+thesis:
+  level: master
+  title: Understanding Feedback Pollution in the R Programming Language
+  url: https://dspace.cvut.cz/entities/publication/ee3e3810-343c-4971-8590-6412428394db/full
+
+abstract: |
+  Modern dynamic languages often leverage Just-in-Time (JIT) compilers to improve performance of frequently executed code. These compilers use the feedback collected at runtime to make speculations about future execution, making further optimization possible. However, over time, the accuracy of this feedback can degrade, leading to less precise speculations and performance degradation. This phenomenon is known as feedback pollution.
+
+  The R programming language is highly specialized for statistical computing and data visualization, and thanks to its features such as reflection and lazy evaluation, it can be difficult to optimize. The Ř JIT compiler tries to improve the performance of R by using speculations on the observed feedback in order to increase the performance of the compiled code.
+
+  The primary objective of this thesis is to develop a tool that allows for detailed observation and analysis of the behavior of the Ř JIT compiler, as otherwise the inner workings of the compiler are a black box. By having the facilities to examine the JIT internals, we open up possibilities for further research and analysis, including the understanding of feedback pollution and feedback usage explored in this thesis.
