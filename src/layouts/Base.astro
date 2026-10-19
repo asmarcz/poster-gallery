@@ -25,7 +25,10 @@ const fullTitle = title ? `${title} · ${site.title}` : site.title;
     <meta property="og:title" content={title ?? site.title} />
     <meta property="og:description" content={description} />
     {image && Astro.site && <meta property="og:image" content={new URL(image, Astro.site)} />}
+    {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
+    {Astro.site && <link rel="sitemap" href={url("sitemap-index.xml")} />}
     <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
+    <slot name="head" />
   </head>
   <body>
     <header class="site-header">
