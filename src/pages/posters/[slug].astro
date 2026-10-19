@@ -37,7 +37,7 @@ const cite = bibtex(p, pageUrl ?? "");
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
 const affiliations = [...new Set((p.authors ?? []).flatMap((a) => a.affiliation ?? []))];
 const numbered = affiliations.length > 1;
-const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.paper || p.doi);
+const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || p.tags || p.paper || p.doi);
 ---
 
 <Base title={p.title} description={p.abstract?.slice(0, 200)} image={thumbSrc(p, 960)}>
@@ -214,6 +214,14 @@ const hasDetails = Boolean(p.conference || p.year || p.thesis || p.tags || p.pap
                     {p.conference.url ? <a href={p.conference.url}>{p.conference.name}</a> : p.conference.name}
                     {p.conference.location && <span class="muted">, {p.conference.location}</span>}
                   </dd>
+                </>
+              )
+            }
+            {
+              p.displayed && (
+                <>
+                  <dt>On display</dt>
+                  <dd>{p.displayed.url ? <a href={p.displayed.url}>{p.displayed.place}</a> : p.displayed.place}</dd>
                 </>
               )
             }

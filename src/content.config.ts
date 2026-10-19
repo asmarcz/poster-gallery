@@ -54,6 +54,15 @@ const conference = shorthand(
   }),
 );
 
+// Where the printed poster hangs, e.g. a corridor at the author's institution.
+const displayed = shorthand(
+  "place",
+  z.strictObject({
+    place: z.string().min(1),
+    url: z.url().optional(),
+  }),
+);
+
 // Strict objects so a misspelled key ("feilds:") fails the build instead of being ignored.
 const poster = z.strictObject({
   title: z.string().min(1),
@@ -68,6 +77,7 @@ const poster = z.strictObject({
     .optional(),
   tags: z.array(z.string().min(1)).optional(),
   conference: conference.optional(),
+  displayed: displayed.optional(),
   year: z.int().min(1900).max(2100).optional(),
   thesis: thesis.optional(),
   abstract: z.string().min(1).optional(),

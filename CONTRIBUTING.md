@@ -48,6 +48,10 @@ conference:                  # or just: conference: SPLASH 2026
   location: Oakland, CA
   url: https://example.org/splash-2026
 
+displayed:                   # where the printed poster hangs; or just the place as text
+  place: Hall on the 12th floor, building A, Example University, Prague
+  url: https://maps.example.org/…
+
 year: 2026
 
 thesis:                      # or just: thesis: master
