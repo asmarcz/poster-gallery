@@ -1,0 +1,61 @@
+title: A Type System for the R Language
+
+authors:
+  - name: Mickaël Laurent
+    affiliation: Charles University
+    orcid: 0000-0003-1590-2392
+  - name: Pierre Donat-Bouillud
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0003-4455-1130
+  - name: Filip Křikava
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0002-0478-6202
+  - name: Jan Vitek
+    affiliation: Charles University & Czech Technical University in Prague
+    orcid: 0000-0003-4052-3458
+
+fields:
+  - CS/ACMCCS/TheoryOfComputation/SemanticsAndReasoning/ProgramConstructs/TypeStructures
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/ContextSpecificLanguages/ScriptingLanguages
+  - CS/arXiv/cs.PL
+
+tags:
+  - type systems
+  - set-theoretic types
+  - gradual typing
+  - dynamic languages
+  - R
+
+conference:
+  name: useR! 2026
+  location: Warsaw, Poland
+  url: https://user2026.r-project.org/
+
+displayed:
+  place: Thákurova 7, Prague; block A, 12th floor
+  url: https://pages.fit.cvut.cz/ict/documents/floorplans/th-overview-1-parsed.pdf
+
+year: 2026
+
+abstract: |
+  We present a new type algebra, and a type checker for the R language in active development.
+  The type algebra features parametric polymorphism to capture genericity, and intersection
+  types to type overloaded functions, for instance, f: int -> int & {a:int} -> {b:int} is the
+  type of a function that when it has an int argument, returns int, and when it has a list
+  argument with name a, returns a list with name b. It supports vector types, named lists data
+  frames, environments and classes. This type algebra is formalized using the set-theoretic
+  types theory, which gives us an algorithm to decide whether two types are subtypes, and a
+  constraint-solving algorithm that can be used to implement a type inference engine.
+
+  We implemented a static type-checker that can infer the type of functions, or check that a
+  function has the type it is annotated with. The type checker and inference engine also
+  supports a subset of the C FFI and so can type some R packages that have native C or Fortran
+  code.
+
+  The type system aims at detecting bug more quickly during the package development process, as
+  well as documenting package functions precisely. We will demonstrate the type system on
+  representative CRAN packages, showing how it catches silent errors and clarifies complex API
+  behaviors.
+
+artifact: https://github.com/PRL-PRG/typr
+editable: https://docs.google.com/presentation/d/1rTQGkavePI2XpCP1ZuI6Yx1mjkyePPnrEBrBUhMK4k4
