@@ -28,6 +28,7 @@ thesis:
 
 src:
   category: undergraduate
+  result: second
 
 abstract: |
   We present a design of a typestate-oriented programming language. Class instances describe
