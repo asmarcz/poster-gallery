@@ -46,9 +46,10 @@ const thesis = shorthand(
   }),
 );
 
-// `src: true` for a competition without categories, `src: graduate` for a category alone.
+// One-line forms: `src: true` (took part), `src: first` (a result, in a competition without
+// categories) and `src: graduate` (a category alone). Result and category names don't overlap.
 const src = z.preprocess(
-  (v) => (v === true ? {} : typeof v === "string" ? { category: v } : v),
+  (v) => (v === true ? {} : typeof v !== "string" ? v : v in srcResults ? { result: v } : { category: v }),
   z.strictObject({
     category: z
       .enum(Object.keys(srcCategories) as [SrcCategory], {
