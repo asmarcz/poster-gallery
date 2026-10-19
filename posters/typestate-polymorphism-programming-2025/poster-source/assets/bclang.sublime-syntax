@@ -1,0 +1,184 @@
+%YAML 1.2
+---
+name: bc
+file_extensions: [bc]
+scope: source.c
+
+# TODO fix type in class property color
+
+variables:
+  identifier: '[A-Za-z_][A-Za-z0-9_]*'
+
+contexts:
+  main:
+    - include: comments
+    - include: top-definitions
+
+  comments:
+    - match: '//'
+      scope: punctuation.definition.comment.line.bc
+      push:
+        - meta_scope: comment.line.double-slash.bc
+        - match: '$'
+          pop: true
+
+  top-definitions:
+    - include: comments
+    - match: \b(class)\s+({{identifier}})\b
+      captures:
+        1: keyword.declaration.class.bc
+        2: entity.name.class.bc
+      push: class-body
+    - match: \b(enum)\s+({{identifier}})\b
+      captures:
+        1: keyword.declaration.enum.bc
+        2: entity.name.enum.bc
+
+  class-body:
+    - include: comments
+    - match: '\{'
+      scope: punctuation.section.class.begin.bc
+      push:
+        - meta_scope: meta.class.body.bc
+        - match: '\}'
+          scope: punctuation.section.class.end.bc
+          pop: true
+        - include: class-member
+
+  class-member:
+    - include: comments
+    - match: '\b(clause)\s+({{identifier}})\b'
+      captures:
+        1: keyword.declaration.clause.bc
+        2: entity.name.clause.bc
+    - match: '\b(pub)\s+(let|var)\s+({{identifier}})(:)\s*({{identifier}})'
+      captures:
+        1: storage.modifier.access.bc
+        2: storage.modifier.bc
+        3: entity.name.variable
+        4: punctuation.separator.colon.bc
+        5: storage.type.bc
+    - match: '\b(let|var)\s+({{identifier}})(:)\s*({{identifier}})'
+      captures:
+        1: storage.modifier.bc
+        2: entity.name.variable
+        3: punctuation.separator.colon.bc
+        4: storage.type.bc
+    - match: '\b(static)\s+(method)\s+({{identifier}})\b'
+      captures:
+        1: storage.modifier.static.bc
+        2: keyword.declaration.method.bc
+        3: entity.name.method.bc
+      push: method-signature
+    - match: '\b(method)\s+({{identifier}})\b'
+      captures:
+        1: keyword.declaration.method.bc
+        2: entity.name.method.bc
+      push: method-signature
+
+  method-signature:
+    - include: comments
+    - match: '\s+\('
+      scope: punctuation.section.parameters.begin.bc
+      push: method-parameters
+    - match: '->\s*({{identifier}})'
+      captures:
+        1: support.type.bc
+    - match: '\b(makes)\b'
+      captures:
+        1: keyword.control.typestate.bc
+    - include: clause-expr
+    - match: '\{'
+      scope: punctuation.section.method.body.begin.bc
+      set: method-body
+  
+  method-parameters:
+    - include: comments
+    - meta_scope: meta.method.parameters.bc
+    - match: '\)'
+      scope: punctuation.section.parameters.end.bc
+      pop: true
+    - match: '\b(let|inout|sink)?\s+({{identifier}})\s*(:)\s*({{identifier}})'
+      captures:
+        1: storage.modifier.binding.bc
+        2: variable.parameter.bc
+        3: punctuation.separator.colon.bc
+        4: storage.type.bc
+    - match: ','
+      scope: punctuation.separator.comma.bc
+
+  method-body:
+    - include: comments
+    - meta_scope: meta.method.body.bc
+    - match: '\}'
+      scope: punctuation.section.method.body.end.bc
+      pop: true
+    - include: implementations
+
+  implementations:
+    - include: comments
+    - match: '\b(takes)\b'
+      captures:
+        1: keyword.control.typestate.bc
+    - include: clause-expr
+    - match: '\{'
+      scope: punctuation.section.implementation.body.begin.bc
+      push: implementation-body
+
+  implementation-body:
+    - include: comments
+    - match: '\{'
+      scope: punctuation.section.block.begin.bc
+      push: block
+    - match: '\}'
+      scope: punctuation.section.implementation.body.end.bc
+      pop: true
+    - include: statement
+
+  clause-expr:
+    - match: '\b(?!any|not|is)[A-z]+\b'
+      scope: entity.name.clause.bc
+
+  block:
+    - include: comments
+    - match: '\{'
+      scope: punctuation.section.block.begin.bc
+      push: block
+    - match: '\}'
+      scope: punctuation.section.block.end.bc
+      pop: true
+    - include: statement
+
+  statement:
+    - include: comments
+    - match: '\b(if|else|return|loop|forget|trust)\b'
+      scope: keyword.control
+    - match: '\b(decide)\b'
+      scope: keyword.control
+      #push:
+      #  - match: '\b(by)\b'
+      #    scope: keyword.control
+      #  - match: '\{'
+      #    scope: punctuation.section.block.begin.bc
+      #    set: block
+    - match: '\b(let|var)\b'
+      scope: storage.modifier.bc
+    - include: checked-block
+
+  checked-block:
+    - include: comments
+    - match: '\b(takes)\b'
+      scope: keyword.control.typestate.bc
+      push: checked-block-makes
+    - match: '\{'
+      scope: punctuation.section.checked-block.begin.bc
+      push: block
+
+  checked-block-makes:
+    - include: comments
+    - match: '\b(makes)\b'
+      scope: keyword.control.typestate.bc
+      push: block
+    - match: '\{'
+      scope: punctuation.section.checked-block.begin.bc
+      push: block
