@@ -1,4 +1,4 @@
-// ACM Student Research Competition: the category a poster competed in and how far it got.
+// Student research competitions: the category a poster competed in and how far it got.
 export const srcCategories = {
   undergraduate: "Undergraduate",
   graduate: "Graduate",
