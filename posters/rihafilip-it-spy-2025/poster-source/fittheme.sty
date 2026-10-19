@@ -1,0 +1,130 @@
+%---------------------------------------------------------------
+% Colors
+%---------------------------------------------------------------
+\definecolor{FITBlue}{RGB}{0,122,194}
+\definecolor{FITGray}{RGB}{199, 219, 241} %CTU light blue
+\definecolor{MutedBlue}{rgb}{0.92, 0.92, 0.97}
+\definecolor{Black}{HTML}{101820}
+
+% tikzposter color palette
+\definecolorpalette{FITPalette} {
+	\definecolor{colorOne}{named}{FITBlue}
+	\definecolor{colorTwo}{named}{FITBlue}
+	\definecolor{colorThree}{named}{FITBlue}
+}
+
+%---------------------------------------------------------------
+% Tikzposter Style
+%---------------------------------------------------------------
+\definecolorstyle{FITStyle} {
+	\usecolorpalette{FITPalette}
+}{
+	% background
+	\colorlet{backgroundcolor}{white}
+	\colorlet{framecolor}{white} % TODO: Change?
+	% title colors
+	\colorlet{titlefgcolor}{white}
+	\colorlet{titlebgcolor}{FITBlue}
+	% block colors
+	\colorlet{blocktitlebgcolor}{colorOne}
+	\colorlet{blocktitlefgcolor}{white}
+	\colorlet{blockbodybgcolor}{white}
+	\colorlet{blockbodyfgcolor}{Black}
+	% innerblock colors
+	\colorlet{innerblocktitlebgcolor}{white}
+	\colorlet{innerblocktitlefgcolor}{Black}
+	\colorlet{innerblockbodybgcolor}{colorTwo}
+	\colorlet{innerblockbodyfgcolor}{Black}
+	% note colors
+	\colorlet{notefgcolor}{Black}
+	\colorlet{notebgcolor}{colorTwo}
+	\colorlet{noteframecolor}{colorTwo}
+}
+
+%---------------------------------------------------------------
+% Style
+%---------------------------------------------------------------
+% background
+\definebackgroundstyle{FITBackgroundStyle}{
+	\draw[line width=0pt, color=framecolor, fill=backgroundcolor]
+	(bottomleft) rectangle (topright);
+}
+
+% title
+\definetitlestyle{FITTitleStyle}{
+	width=\textwidth, linewidth=5pt, titletotopverticalspace=0in
+}{
+	\begin{scope}[line width=0pt,]
+		\draw[color=colorThree, fill=titlebgcolor,round cap-round cap, ]
+		(\titleposleft,\titleposbottom) rectangle (\titleposright,\titlepostop);
+	\end{scope}
+}
+
+% block
+\defineblockstyle{FITBlockStyle}{
+	titlewidthscale=1, bodywidthscale=1, roundedcorners=0
+}{
+	\draw[color=framecolor, fill=blockbodybgcolor,
+		rounded corners=\blockroundedcorners] (blockbody.south west)
+	rectangle (blockbody.north east);
+	\ifBlockHasTitle
+		\draw[color=framecolor, fill=blocktitlebgcolor,
+			rounded corners=\blockroundedcorners] (blocktitle.south west)
+		rectangle (blocktitle.north east);
+	\fi
+}
+
+%---------------------------------------------------------------
+% Theme
+%---------------------------------------------------------------
+% FIT theme
+\definelayouttheme{FITTheme}{
+	\usecolorstyle[colorPalette=FITPalette]{FITStyle}
+	\usebackgroundstyle{FITBackgroundStyle}
+	\usetitlestyle{FITTitleStyle}
+	\useblockstyle{FITBlockStyle}
+	\useinnerblockstyle{Default}
+	\usenotestyle{Default}
+}
+
+%---------------------------------------------------------------
+% Style variables
+%---------------------------------------------------------------
+\newcommand*{\supervisor}[1]{\gdef\@supervisor{#1}}
+\newcommand*{\@supervisor}{}
+
+\newcommand*{\footer}[1]{\gdef\@footercontent{#1}}
+\newcommand*{\@footercontent}{}
+
+%---------------------------------------------------------------
+% Title format
+%---------------------------------------------------------------
+% place logo to right of centered title
+\makeatletter
+\renewcommand\TP@maketitle{%
+	\centering
+	\begin{minipage}[b]{0.8\linewidth}
+		\centering
+		\color{titlefgcolor}
+		{\bfseries \Huge \@title \par}
+		\vspace*{1em}
+		{\Large \@author} {\Large \@supervisor \par}
+	\end{minipage}%
+	\tikz[remember picture,overlay]\node[anchor=south east,xshift=0.5\linewidth,inner sep=0pt] {%
+		\@titlegraphic
+	};
+}
+\makeatother
+
+%---------------------------------------------------------------
+% Footer format
+%---------------------------------------------------------------
+\makeatletter
+\AtBeginDocument{
+	\node[color=titlefgcolor, anchor=south west, fill=titlebgcolor, align=center, text width=\textwidth, inner ysep=20pt] (footer) at (-0.5\textwidth, -0.5\textheight) {
+		\begin{minipage}{\textwidth}
+			\Large \@footercontent
+		\end{minipage}
+	};
+}
+
