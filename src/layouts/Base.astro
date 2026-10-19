@@ -28,6 +28,7 @@ const fullTitle = title ? `${title} · ${site.title}` : site.title;
     {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
     {Astro.site && <link rel="sitemap" href={url("sitemap-index.xml")} />}
     <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
+    <meta name="google-site-verification" content="N-SNDy3MQMc85HDQjiGMvL8limqIu8J1y9CykLKQsdM" />
     <slot name="head" />
   </head>
   <body>
