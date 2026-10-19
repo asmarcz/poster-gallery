@@ -1,0 +1,53 @@
+title: A Type System for the R Language
+
+authors:
+  - name: Mickaël Laurent
+    affiliation: Charles University
+    orcid: 0000-0003-1590-2392
+  - name: Pierre Donat-Bouillud
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0003-4455-1130
+  - name: Filip Křikava
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0002-0478-6202
+  - name: Jan Vitek
+    affiliation: Charles University & Czech Technical University in Prague
+    orcid: 0000-0003-4052-3458
+
+fields:
+  - CS/ACMCCS/TheoryOfComputation/SemanticsAndReasoning/ProgramConstructs/TypeStructures
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/ContextSpecificLanguages/ScriptingLanguages
+  - CS/arXiv/cs.PL
+
+tags:
+  - type systems
+  - set-theoretic types
+  - gradual typing
+  - dynamic languages
+  - R
+
+conference:
+  name: useR! 2026
+  location: Warsaw, Poland
+  url: https://user2026.r-project.org/
+
+displayed:
+  place: Thákurova 7, Prague; block A, 12th floor
+  url: https://pages.fit.cvut.cz/ict/documents/floorplans/th-overview-1-parsed.pdf
+
+year: 2026
+
+abstract: |
+  R hides much of what a value is: its storage type, its shape (scalar, vector or matrix)
+  and its S3 classes are all invisible at the call site, so mistakes surface late, far from
+  their cause, or not at all. We propose a type system for R that makes these explicit where
+  needed, aiming for a sweet spot between precision and ergonomics.
+
+  Types are sets: atomic vectors and scalars, lists and records, S3 classes and functions
+  combine with union, intersection and negation. The system supports overloading,
+  parametric and row polymorphism, and narrowing on typeof checks. The Typr tool parses R
+  code and native libraries and type-checks R definitions, leaving unannotated code
+  gradually typed. Editor integration, runtime checks and type inference are future work.
+
+artifact: https://github.com/PRL-PRG/typr
+editable: https://docs.google.com/presentation/d/1rTQGkavePI2XpCP1ZuI6Yx1mjkyePPnrEBrBUhMK4k4
