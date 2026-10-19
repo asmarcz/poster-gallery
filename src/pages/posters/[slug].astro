@@ -14,6 +14,7 @@ import {
 } from "../../lib/posters";
 import { citationMeta, description, jsonLd } from "../../lib/seo";
 import { groupFields } from "../../lib/taxonomy";
+import { srcCategories, srcResults } from "../../lib/competition";
 import { thesisLevels } from "../../lib/thesis";
 import { url } from "../../site";
 
@@ -38,7 +39,7 @@ const cite = bibtex(p, pageUrl ?? "");
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
 const affiliations = [...new Set((p.authors ?? []).flatMap((a) => a.affiliation ?? []))];
 const numbered = affiliations.length > 1;
-const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || p.tags || p.doi);
+const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || p.src || p.tags || p.doi);
 ---
 
 <Base title={p.title} description={description(p)} image={thumbSrc(p, 960)}>
@@ -269,6 +270,17 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
                     ) : (
                       thesisLevels[p.thesis.level]
                     )}
+                  </dd>
+                </>
+              )
+            }
+            {
+              p.src && (
+                <>
+                  <dt>Student Research Competition</dt>
+                  <dd>
+                    {srcCategories[p.src.category]} category
+                    {p.src.result && <>, {srcResults[p.src.result]}</>}
                   </dd>
                 </>
               )

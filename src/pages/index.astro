@@ -31,6 +31,7 @@ const tagCounts = new Map<string, number>();
 for (const t of posters.flatMap((p) => p.tags ?? [])) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
 const tags = [...tagCounts].sort(([a], [b]) => a.localeCompare(b));
 const levels = Object.entries(thesisLevels).filter(([level]) => usedLevels.has(level as ThesisLevel));
+const withSrc = posters.filter((p) => p.src).length;
 const withAbstract = posters.filter((p) => p.asset.abstract?.pdf).length;
 ---
 
@@ -107,15 +108,16 @@ const withAbstract = posters.filter((p) => p.asset.abstract?.pdf).length;
                 </select>
               </label>
             )}
-            {levels.length > 0 && (
+            {(levels.length > 0 || withSrc > 0) && (
               <label>
-                <span class="visually-hidden">Thesis</span>
-                <select name="thesis">
+                <span class="visually-hidden">Type</span>
+                <select name="type">
                   <option value="">All types</option>
-                  <option value="any">Any thesis</option>
+                  {levels.length > 0 && <option value="thesis">Any thesis</option>}
                   {levels.map(([level, label]) => (
                     <option value={level}>{label}</option>
                   ))}
+                  {withSrc > 0 && <option value="src">Student Research Competition</option>}
                 </select>
               </label>
             )}
@@ -172,7 +174,7 @@ const withAbstract = posters.filter((p) => p.asset.abstract?.pdf).length;
     const count = document.querySelector("#count")!;
     const clear = document.querySelector<HTMLButtonElement>("#clear")!;
     const noResults = document.querySelector<HTMLElement>("#no-results")!;
-    const names = ["q", "field", "venue", "year", "thesis", "tag", "abstract"] as const;
+    const names = ["q", "field", "venue", "year", "type", "tag", "abstract"] as const;
 
     const control = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
     const isCheckbox = (el: Element | null): el is HTMLInputElement => el instanceof HTMLInputElement && el.type === "checkbox";
@@ -197,7 +199,7 @@ const withAbstract = posters.filter((p) => p.asset.abstract?.pdf).length;
       const fieldId = value("field");
       const venue = value("venue");
       const year = value("year");
-      const thesis = value("thesis");
+      const type = value("type");
       const tag = value("tag");
       const abstract = value("abstract");
 
@@ -209,7 +211,9 @@ const withAbstract = posters.filter((p) => p.asset.abstract?.pdf).length;
           (!fieldId || d.fields!.split(" ").includes(fieldId)) &&
           (!venue || d.venue === venue) &&
           (!year || d.year === year) &&
-          (!thesis || (thesis === "any" ? d.thesis !== "" : d.thesis === thesis)) &&
+          // "thesis" is any thesis, "src" a competition entry, anything else a thesis level.
+          (!type ||
+            (type === "src" ? d.src === "1" : type === "thesis" ? d.thesis !== "" : d.thesis === type)) &&
           (!abstract || d.abstract === "1") &&
           (!tag || (JSON.parse(d.tags!) as string[]).includes(tag));
         card.hidden = !match;

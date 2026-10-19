@@ -33,6 +33,7 @@ const venue = venueLine(p);
   data-venue={p.conference?.name ?? ""}
   data-year={p.year ?? ""}
   data-thesis={p.thesis?.level ?? ""}
+  data-src={p.src ? "1" : ""}
   data-abstract={p.asset.abstract?.pdf ? "1" : ""}
   data-tags={JSON.stringify(p.tags ?? [])}
 >

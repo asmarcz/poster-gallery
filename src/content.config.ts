@@ -2,6 +2,7 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { fieldIds } from "./lib/taxonomy";
+import { srcCategories, srcResults, type SrcCategory, type SrcResult } from "./lib/competition";
 import { thesisLevels } from "./lib/thesis";
 
 // Authors, conferences and theses may be written as a single value; both forms become objects.
@@ -45,6 +46,20 @@ const thesis = shorthand(
   }),
 );
 
+const src = shorthand(
+  "category",
+  z.strictObject({
+    category: z.enum(Object.keys(srcCategories) as [SrcCategory], {
+      error: () => `SRC category must be one of: ${Object.keys(srcCategories).join(", ")}.`,
+    }),
+    result: z
+      .enum(Object.keys(srcResults) as [SrcResult], {
+        error: () => `SRC result must be one of: ${Object.keys(srcResults).join(", ")}.`,
+      })
+      .optional(),
+  }),
+);
+
 const conference = shorthand(
   "name",
   z.strictObject({
@@ -80,6 +95,7 @@ const poster = z.strictObject({
   displayed: displayed.optional(),
   year: z.int().min(1900).max(2100).optional(),
   thesis: thesis.optional(),
+  src: src.optional(),
   abstract: z.string().min(1).optional(),
   paper: z.url().optional(),
   doi: z
