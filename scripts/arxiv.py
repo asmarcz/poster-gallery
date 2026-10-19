@@ -1,6 +1,6 @@
 """Generates taxonomy/arxiv-<group>.yml classification schemes from arXiv's category taxonomy.
 
-Usage: python3 scripts/arxiv.py [GROUP ...]     (default: cs)
+Usage: python3 scripts/arxiv.py [GROUP ...]     (default: every group)
 
 GROUP is an arXiv group: cs, econ, eess, math, physics, q-bio, q-fin or stat. Each category
 becomes one entry keyed by its arXiv id. Categories inside an archive of their own (physics
@@ -25,7 +25,6 @@ def quote(s: str) -> str:
 
 
 def main() -> None:
-    groups = sys.argv[1:] or ["cs"]
     request = urllib.request.Request(SOURCE, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(request) as response:
         page = response.read().decode("utf-8")
@@ -33,6 +32,7 @@ def main() -> None:
     # The page is one section per group, each opened by <h2 … id="accordion-head-grp_<group>">.
     sections = re.split(r'<h2 class="accordion-head" id="accordion-head-grp_', page)[1:]
     by_group = {s.split('"', 1)[0]: s for s in sections}
+    groups = sys.argv[1:] or list(by_group)
 
     for group in groups:
         if group not in by_group:

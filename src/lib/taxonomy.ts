@@ -5,7 +5,8 @@ import { parse } from "yaml";
 interface RawField {
   label: string;
   subfields?: Record<string, string>;
-  schemes?: Record<string, { label: string; file: string }>;
+  /** A scheme's entries come from one file, or several merged (e.g. arXiv's math and stat groups). */
+  schemes?: Record<string, { label: string; file: string | string[] }>;
 }
 
 export interface Scheme {
@@ -39,7 +40,7 @@ export const fields: Field[] = Object.entries(raw).flatMap(([root, { label, subf
   })),
   ...Object.entries(schemes ?? {}).flatMap(([key, { label: schemeLabel, file }]) => {
     const scheme = { id: `${root}/${key}`, label: schemeLabel };
-    const entries: Record<string, string> = read(file);
+    const entries: Record<string, string> = Object.assign({}, ...[file].flat().map(read));
     return Object.entries(entries).map(([path, name]) => schemeField(root, scheme, entries, path, name));
   }),
 ]);
