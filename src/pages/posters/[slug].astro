@@ -12,6 +12,7 @@ import {
   thumbSrcset,
   type Poster,
 } from "../../lib/posters";
+import { citationMeta, description, jsonLd } from "../../lib/seo";
 import { groupFields } from "../../lib/taxonomy";
 import { thesisLevels } from "../../lib/thesis";
 import { url } from "../../site";
@@ -40,7 +41,11 @@ const numbered = affiliations.length > 1;
 const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || p.tags || p.doi);
 ---
 
-<Base title={p.title} description={p.abstract?.slice(0, 200)} image={thumbSrc(p, 960)}>
+<Base title={p.title} description={description(p)} image={thumbSrc(p, 960)}>
+  <Fragment slot="head">
+    {citationMeta(p, Astro.site).map(([name, content]) => <meta name={name} content={content} />)}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd(p, Astro.site))} />
+  </Fragment>
   <div class="page">
     <a class="back" href={url()}><Icon name="arrow-left" size={16} />All posters</a>
 
