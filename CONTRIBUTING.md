@@ -106,11 +106,19 @@ the pull request description.
 
 ## Submit
 
-Fork the repository and add the folder on a branch. `npm run build` checks it (needs
-Node.js 22+ and `pdftoppm`); CI runs the same check.
+Work in a fork, on a branch. `npm run build` checks the folder (needs Node.js 22+ and
+`pdftoppm`); CI runs the same check.
 
 ```sh
+gh repo fork asmarcz/poster-gallery --clone
+cd poster-gallery
+git switch -c add-<slug>
+# add posters/<slug>/, run npm run build, commit
+git push -u origin add-<slug>
 gh pr create --title "Add poster: <title>" --template .github/PULL_REQUEST_TEMPLATE.md
 ```
+
+`--clone` makes your fork `origin` and this repository `upstream`, so the pull request goes
+here without asking. In an existing clone, run `gh repo fork --remote` instead.
 
 A maintainer reviews it by hand ([REVIEWING.md](REVIEWING.md)) before merging.
