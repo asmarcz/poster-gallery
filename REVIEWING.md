@@ -21,8 +21,8 @@ problems with file and line, and leave approving and merging to a maintainer.
 
 ## Fields and tags
 
-- `fields` uses the most specific entries, and matches the paper's ACM CCS concepts, arXiv
-  categories or Springer subjects where it has them.
+- `fields` uses the most specific entries, and matches the paper's ACM CCS concepts, preprint
+  categories (arXiv, bioRxiv, medRxiv, ChemRxiv) or Springer subjects where it has them.
 - Tags are lowercase (except proper nouns), don't repeat the field, and don't duplicate an
   existing tag under another spelling (`grep -rh -A20 "^tags:" posters/*/poster.yml`).
 - A new `taxonomy.yml` field is really missing, sits under the right parent, and has a

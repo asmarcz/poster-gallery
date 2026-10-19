@@ -82,8 +82,12 @@ Use ids from [taxonomy.yml](taxonomy.yml) and the schemes in [taxonomy/](taxonom
   Reuse the subjects on the paper's SpringerLink page.
 - [ACM CCS](https://dl.acm.org/ccs), for Computer Science:
   `CS/ACMCCS/SoftwareAndItsEngineering/…/JustInTimeCompilers`. Reuse the paper's `\ccsdesc`.
-- [arXiv](https://arxiv.org/category_taxonomy), for Computer Science: `CS/arXiv/cs.PL`.
-  Reuse the preprint's categories.
+- [arXiv](https://arxiv.org/category_taxonomy), for Computer Science, Mathematics, Physics,
+  Biology, Economics and Engineering: `CS/arXiv/cs.PL`, `Mathematics/arXiv/math.CO`.
+- bioRxiv (Biology), medRxiv (Medicine) and ChemRxiv (Chemistry):
+  `Biology/bioRxiv/Neuroscience`, `Medicine/medRxiv/Epidemiology`.
+
+For arXiv and the Rxiv servers, reuse the preprint's categories.
 
 Pick the most specific entries; several are fine. If nothing fits, add a field to
 `taxonomy.yml` in the same pull request.
