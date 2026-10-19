@@ -29,6 +29,10 @@ const manifest = assets as Record<string, PosterAsset>;
 /** Newest first; posters without a year go last, ties sorted by title. */
 export async function getPosters(): Promise<Poster[]> {
   const entries = await getCollection("posters");
+  for (const e of entries) {
+    // The dev server builds the asset list once at startup; posters added later are missing from it.
+    if (!manifest[e.id]) throw new Error(`No assets for posters/${e.id}; run "npm run prepare-assets".`);
+  }
   return entries
     .map((e) => ({ ...e.data, slug: e.id, asset: manifest[e.id] }))
     .sort((a, b) => (b.year ?? -Infinity) - (a.year ?? -Infinity) || a.title.localeCompare(b.title));
