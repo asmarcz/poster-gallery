@@ -1,0 +1,58 @@
+title: Characterizing Type Feedback in Just-in-Time Compilation
+
+authors:
+  - name: Sebastián Krynski
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0002-4124-0225
+  - name: Filip Říha
+    affiliation: Czech Technical University in Prague
+    orcid: 0009-0009-3933-2997
+  - name: Filip Křikava
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0002-0478-6202
+  - name: Jan Vitek
+    affiliation: Charles University & Czech Technical University in Prague
+    orcid: 0000-0003-4052-3458
+  - name: Oliver Tušla
+    affiliation: Czech Technical University in Prague
+    orcid: 0009-0003-5459-5820
+
+fields:
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/Compilers/JustInTimeCompilers
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareOrganizationAndProperties/SoftwareFunctionalProperties/FormalMethods/DynamicAnalysis
+  - CS/arXiv/cs.PL
+
+tags:
+  - type feedback
+  - type speculation
+  - deoptimization
+  - dynamic languages
+  - R
+
+conference:
+  name: ECOOP 2026
+  location: Brussels, Belgium
+  url: https://2026.ecoop.org/
+
+year: 2026
+
+abstract: |
+  Just-in-time (JIT) compilers leverage type feedback to optimize dynamic languages by
+  recording runtime observations during interpretation and using them to generate specialized
+  code. However, this recording process introduces significant execution time overhead to
+  program warmup. This paper presents a characterization study of how feedback information is
+  utilized by JIT compilers, providing motivation for future work on reducing recording
+  overhead. We instrument the Ř compiler for the R language to track feedback slot usage
+  throughout compilation, analyzing well-known benchmarks and real-world programs. Our
+  measurements reveal that recording adds overhead to the interpreter up to 1.6× (mean 1.2×),
+  yet at least 59% of non-empty slots are not used by the compiler. A large fraction of these
+  unused slots can be attributed to dead code that the compiler eliminated. Most of the
+  remaining slots are type-stable—meaning the inferred type matches the observed type—making
+  speculation futile. To quantify the potential for improvement, we evaluate two oracle-based
+  configurations that establish upper bounds on achievable reduction: a conservative set
+  approach that preserves optimization quality while improving warmup, and an optimistic set
+  approach that sacrifices some compiled code performance for faster interpretation.
+
+paper: https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECOOP.2026.16
+doi: 10.4230/LIPIcs.ECOOP.2026.16
+artifact: https://doi.org/10.5281/zenodo.19551252
