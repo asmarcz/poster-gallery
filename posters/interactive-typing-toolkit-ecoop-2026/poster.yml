@@ -29,6 +29,10 @@ conference:
   location: Brussels, Belgium
   url: https://2026.ecoop.org/
 
+displayed:
+  place: Thákurova 7, Prague; block A, 12th floor
+  url: https://pages.fit.cvut.cz/ict/documents/floorplans/th-overview-1-parsed.pdf
+
 year: 2026
 
 abstract: |
