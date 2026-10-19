@@ -37,7 +37,7 @@ const cite = bibtex(p, pageUrl ?? "");
 // Number affiliations like a paper's author line; one shared affiliation needs no numbers.
 const affiliations = [...new Set((p.authors ?? []).flatMap((a) => a.affiliation ?? []))];
 const numbered = affiliations.length > 1;
-const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || p.tags || p.paper || p.doi);
+const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || p.tags || p.doi);
 ---
 
 <Base title={p.title} description={p.abstract?.slice(0, 200)} image={thumbSrc(p, 960)}>
@@ -144,6 +144,14 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
             )
           }
           {
+            !abstract && p.paper && (
+              <a class="button" href={p.paper}>
+                <Icon name="paper" />
+                Paper
+              </a>
+            )
+          }
+          {
             !abstract && p.artifact && (
               <a class="button" href={p.artifact}>
                 <Icon name="repo" />
@@ -177,14 +185,22 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
             </div>
           )
         }
-        {/* The artifact belongs to the whole project, so it sits apart from the poster and abstract rows. */}
+        {/* The paper and artifact belong to the whole project, so they sit apart from the poster and abstract rows. */}
         {
-          abstract && p.artifact && (
+          abstract && (p.paper || p.artifact) && (
             <div class="actions part">
-              <a class="button" href={p.artifact}>
-                <Icon name="repo" />
-                Artifact
-              </a>
+              {p.paper && (
+                <a class="button" href={p.paper}>
+                  <Icon name="paper" />
+                  Paper
+                </a>
+              )}
+              {p.artifact && (
+                <a class="button" href={p.artifact}>
+                  <Icon name="repo" />
+                  Artifact
+                </a>
+              )}
             </div>
           )
         }
@@ -264,18 +280,6 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
                         </li>
                       ))}
                     </ul>
-                  </dd>
-                </>
-              )
-            }
-            {
-              p.paper && (
-                <>
-                  <dt>Paper</dt>
-                  <dd>
-                    <a class="break" href={p.paper}>
-                      {p.paper.replace(/^https?:\/\//, "")}
-                    </a>
                   </dd>
                 </>
               )
