@@ -46,12 +46,15 @@ const thesis = shorthand(
   }),
 );
 
-const src = shorthand(
-  "category",
+// `src: true` for a competition without categories, `src: graduate` for a category alone.
+const src = z.preprocess(
+  (v) => (v === true ? {} : typeof v === "string" ? { category: v } : v),
   z.strictObject({
-    category: z.enum(Object.keys(srcCategories) as [SrcCategory], {
-      error: () => `SRC category must be one of: ${Object.keys(srcCategories).join(", ")}.`,
-    }),
+    category: z
+      .enum(Object.keys(srcCategories) as [SrcCategory], {
+        error: () => `SRC category must be one of: ${Object.keys(srcCategories).join(", ")}.`,
+      })
+      .optional(),
     result: z
       .enum(Object.keys(srcResults) as [SrcResult], {
         error: () => `SRC result must be one of: ${Object.keys(srcResults).join(", ")}.`,

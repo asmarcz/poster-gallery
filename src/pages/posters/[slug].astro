@@ -279,8 +279,9 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
                 <>
                   <dt>Student Research Competition</dt>
                   <dd>
-                    {srcCategories[p.src.category]} category
-                    {p.src.result && <>, {srcResults[p.src.result]}</>}
+                    {[p.src.category && `${srcCategories[p.src.category]} category`, p.src.result && srcResults[p.src.result]]
+                      .filter(Boolean)
+                      .join(", ") || "Participant"}
                   </dd>
                 </>
               )

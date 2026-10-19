@@ -59,8 +59,8 @@ thesis:                      # or just: thesis: master
   title: Type Inference for Notebooks
   url: https://example.org/theses/12345
 
-src:                         # ACM Student Research Competition; or just: src: graduate
-  category: graduate         # undergraduate or graduate
+src:                         # ACM Student Research Competition; or just: src: true
+  category: graduate         # undergraduate or graduate, if the competition has categories
   result: first              # finalist, first, second or third
 
 abstract: |                  # short summary for the page
