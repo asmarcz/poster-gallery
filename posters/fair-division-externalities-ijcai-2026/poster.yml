@@ -1,0 +1,56 @@
+title: Tight Asymptotic Bounds for Fair Division with Externalities
+
+authors:
+  - name: Frank Connor
+    affiliation: McGill University
+    orcid: 0009-0006-6891-3318
+  - name: Max Dupré la Tour
+    affiliation: McGill University
+    orcid: 0009-0007-5868-0917
+  - name: Vishnu V. Narayan
+    affiliation: IIT Bombay
+    orcid: 0009-0000-8844-9969
+  - name: Šimon Schierreich
+    affiliation: AGH University of Krakow & Czech Technical University in Prague
+    orcid: 0000-0001-8901-1942
+
+fields:
+  - CS/ACMCCS/TheoryOfComputation/TheoryAndAlgorithmsForApplicationDomains/AlgorithmicGameTheoryAndMechanismDesign/AlgorithmicGameTheory
+  - CS/ACMCCS/TheoryOfComputation/TheoryAndAlgorithmsForApplicationDomains/AlgorithmicGameTheoryAndMechanismDesign/AlgorithmicMechanismDesign
+  - CS/arXiv/cs.GT
+
+tags:
+  - fair division
+  - externalities
+  - envy-freeness
+  - indivisible items
+  - discrepancy theory
+
+conference:
+  name: IJCAI 2026
+  location: Bremen, Germany
+  url: https://2026.ijcai.org/
+
+displayed:
+  place: Thákurova 7, Prague; block A, 12th floor
+  url: https://pages.fit.cvut.cz/ict/documents/floorplans/th-overview-1-parsed.pdf
+
+year: 2026
+
+abstract: |
+  We study the problem of allocating a set of indivisible items among agents whose preferences
+  include externalities. Unlike the standard fair division model, agents may derive positive or
+  negative utility not only from items allocated directly to them, but also from items allocated
+  to other agents. Since exact envy-freeness cannot be guaranteed, prior work has focused on its
+  relaxations. However, two central questions remained open: does there always exist an
+  allocation that is envy-free up to one item (EF1), and if not, what is the optimal relaxation
+  EF-k that can always be attained?
+
+  We settle both questions by deriving tight asymptotic bounds on the number of items sufficient
+  to eliminate envy. We show that for any instance with n agents, an allocation that is
+  envy-free up to O(√n) items always exists and can be found in polynomial time, and we prove a
+  matching Ω(√n) lower bound showing that this result is tight even for binary valuations, which
+  rules out the existence of EF1 allocations when agents have externalities.
+
+paper: https://arxiv.org/abs/2601.13287
+doi: 10.24963/ijcai.2026/373
