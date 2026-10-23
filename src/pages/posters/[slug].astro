@@ -60,6 +60,7 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
             sizes="(min-width: 64rem) 30rem, 100vw"
             width={p.asset.width}
             height={p.asset.height}
+            style={`--ar: ${(p.asset.width / p.asset.height).toFixed(4)}`}
             alt={`First page of the poster “${p.title}”`}
           />
         </a>
@@ -402,11 +403,12 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
     display: block;
   }
 
+  /* Full width, unless that would make the poster taller than 80vh; the box always has the
+     poster's own aspect ratio (--ar), so the shadow sits on the poster's edge. */
   .preview img {
-    width: 100%;
+    width: min(100%, 80vh * var(--ar));
     height: auto;
-    max-height: 80vh;
-    object-fit: contain;
+    margin-inline: auto;
     box-shadow: var(--shadow-rest);
   }
 

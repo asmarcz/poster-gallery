@@ -46,6 +46,7 @@ const venue = venueLine(p);
         sizes="(min-width: 76rem) 17rem, (min-width: 40rem) 30vw, 50vw"
         width={p.asset.width}
         height={p.asset.height}
+        style={`--ar: ${(p.asset.width / p.asset.height).toFixed(4)}`}
         alt=""
         loading="lazy"
         decoding="async"
@@ -75,23 +76,22 @@ const venue = venueLine(p);
 
   /* Portrait A-series frame; landscape posters sit centred inside it. */
   .frame {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     aspect-ratio: 1 / 1.3;
-    /* Without this a tall image stretches the frame past its aspect ratio. */
-    min-height: 0;
     padding: 0.75rem;
     border-radius: var(--radius);
     background: var(--surface);
+    /* Lets the image size itself against the frame's inner box (cqw/cqh below). */
+    container-type: size;
   }
 
+  /* The image box is exactly the poster: as wide as fits both the frame's width and, through
+     the poster's own aspect ratio (--ar, set per card), its height. Percentage heights and
+     object-fit made Safari draw the shadow around a box larger than the poster. */
   .frame img {
-    max-height: 100%;
-    min-width: 0;
-    width: auto;
+    width: min(100cqw, 100cqh * var(--ar));
     height: auto;
-    object-fit: contain;
     box-shadow: var(--shadow-rest);
     transition-property: box-shadow, translate;
     transition-duration: 200ms;
