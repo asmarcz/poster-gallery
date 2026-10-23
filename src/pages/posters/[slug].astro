@@ -403,13 +403,16 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
     display: block;
   }
 
-  /* Full width, unless that would make the poster taller than 80vh; the box always has the
-     poster's own aspect ratio (--ar), so the shadow sits on the poster's edge. */
+  /* Full width, unless that would make the poster taller than 80% of the visible height; the
+     box always has the poster's own aspect ratio (--ar), so the shadow sits on the poster's
+     edge. On tablets and phones the visible height (dvh) grows when the browser's toolbar
+     slides away while scrolling; the transition turns that jump into a smooth enlargement. */
   .preview img {
-    width: min(100%, 80vh * var(--ar));
+    width: min(100%, 80dvh * var(--ar));
     height: auto;
     margin-inline: auto;
     box-shadow: var(--shadow-rest);
+    transition: width 300ms var(--ease);
   }
 
   .body {
