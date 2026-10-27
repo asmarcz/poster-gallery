@@ -1,0 +1,42 @@
+---
+// Links that belong to the whole project rather than one PDF: the paper, the artifact and
+// recordings of talks about it.
+import Icon from "./Icon.astro";
+import type { Poster } from "../lib/posters";
+
+interface Props {
+  poster: Poster;
+}
+
+const { poster: p } = Astro.props;
+const recordings = (p.recordings ?? []).map((r, i, all) => ({
+  url: r.url,
+  // Untitled recordings are numbered when there are several.
+  label: r.title ?? (all.length > 1 ? `Recording ${i + 1}` : "Recording"),
+}));
+---
+
+{
+  p.paper && (
+    <a class="button" href={p.paper}>
+      <Icon name="paper" />
+      Paper
+    </a>
+  )
+}
+{
+  p.artifact && (
+    <a class="button" href={p.artifact}>
+      <Icon name="repo" />
+      Artifact
+    </a>
+  )
+}
+{
+  recordings.map((r) => (
+    <a class="button" href={r.url}>
+      <Icon name="play" />
+      {r.label}
+    </a>
+  ))
+}

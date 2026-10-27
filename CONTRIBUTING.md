@@ -72,6 +72,11 @@ paper: https://doi.org/10.1145/1234567.1234568   # any link to the paper
 doi: 10.1145/1234567.1234568                      # usually the extended abstract's
 artifact: https://github.com/you/tool             # the tool, code or data the poster presents
 editable: https://docs.google.com/presentation/d/…/edit   # Google Slides, Canva, …
+
+recordings:                  # talks or videos about the poster
+  - https://www.youtube.com/watch?v=…               # shown as "Recording"
+  - url: https://www.youtube.com/watch?v=…
+    title: SRC finals talk                          # a label for when there are several
 ```
 
 ## Fields

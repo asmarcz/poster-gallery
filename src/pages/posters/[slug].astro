@@ -1,5 +1,6 @@
 ---
 import Icon from "../../components/Icon.astro";
+import ProjectLinks from "../../components/ProjectLinks.astro";
 import Base from "../../layouts/Base.astro";
 import {
   bibtex,
@@ -150,22 +151,7 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
               </a>
             )
           }
-          {
-            !abstract && p.paper && (
-              <a class="button" href={p.paper}>
-                <Icon name="paper" />
-                Paper
-              </a>
-            )
-          }
-          {
-            !abstract && p.artifact && (
-              <a class="button" href={p.artifact}>
-                <Icon name="repo" />
-                Artifact
-              </a>
-            )
-          }
+          {!abstract && <ProjectLinks poster={p} />}
         </div>
 
         {
@@ -197,22 +183,11 @@ const hasDetails = Boolean(p.conference || p.displayed || p.year || p.thesis || 
             </div>
           )
         }
-        {/* The paper and artifact belong to the whole project, so they sit apart from the poster and abstract rows. */}
+        {/* The paper, artifact and recordings belong to the whole project, so they sit apart from the poster and abstract rows. */}
         {
-          abstract && (p.paper || p.artifact) && (
+          abstract && (p.paper || p.artifact || p.recordings) && (
             <div class="actions part">
-              {p.paper && (
-                <a class="button" href={p.paper}>
-                  <Icon name="paper" />
-                  Paper
-                </a>
-              )}
-              {p.artifact && (
-                <a class="button" href={p.artifact}>
-                  <Icon name="repo" />
-                  Artifact
-                </a>
-              )}
+              <ProjectLinks poster={p} />
             </div>
           )
         }

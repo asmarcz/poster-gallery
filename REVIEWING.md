@@ -35,6 +35,7 @@ problems with file and line, and leave approving and merging to a maintainer.
 - The `-source/` folders hold the sources of their PDFs, without build leftovers, secrets or
   personal data.
 - `artifact` points to the research, not to the poster's source.
+- `recordings` are public and show this work being presented.
 - `editable` points to an online-only tool (Google Slides, Canva, …), shows the same poster,
   and is view-only.
 - The authors agree to publishing it, and nothing is under embargo.

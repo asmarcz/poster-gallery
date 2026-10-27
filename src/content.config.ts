@@ -108,6 +108,11 @@ const poster = z.strictObject({
     .optional(),
   artifact: z.url().optional(),
   editable: z.url().optional(),
+  // Talks or videos about the poster, e.g. the SRC presentation; a link, or a link with a label.
+  recordings: z
+    .array(shorthand("url", z.strictObject({ url: z.url(), title: z.string().min(1).optional() })))
+    .min(1)
+    .optional(),
 });
 
 export const collections = {
