@@ -1,0 +1,54 @@
+title: "R4R: Reproducibility for R"
+
+authors:
+  - name: Anastasija Skotorenko
+    affiliation: Charles University
+  - name: Pierre Donat-Bouillud
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0003-4455-1130
+  - name: Filip Křikava
+    affiliation: Czech Technical University in Prague
+    orcid: 0000-0002-0478-6202
+
+fields:
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/SoftwareConfigurationManagementAndVersionControlSystems
+  - CS/ACMCCS/SoftwareAndItsEngineering/SoftwareNotationsAndTools/ContextSpecificLanguages/ScriptingLanguages
+  - CS/arXiv/cs.SE
+
+tags:
+  - reproducibility
+  - R
+  - R Markdown
+  - Docker
+  - system call tracing
+
+conference:
+  name: useR! 2025
+  location: Durham, NC, United States
+  url: https://user2025.r-project.org/
+
+displayed:
+  place: Thákurova 7, Prague; block A, 12th floor
+  url: https://pages.fit.cvut.cz/ict/documents/floorplans/th-overview-1-parsed.pdf
+
+year: 2025
+
+abstract: |
+  Creating a reproducible environment for data analysis pipelines is challenging, due to the
+  wide range of dependencies involved—from data inputs and external tools to system libraries
+  and R packages. Although various tools exist to simplify the process, they often focus
+  exclusively on R package dependencies and omit the system ones, rely on user-supplied
+  metadata, or create an unnecessarily large environment. We present r4r, a tool that
+  automatically traces all dependencies in a pipeline using system call interception. Based on
+  these traces, r4r generates a Docker image containing precisely the dependencies needed for
+  reproducible execution. We demonstrate its effectiveness on a collection of R Markdown
+  notebooks from Kaggle, illustrating how r4r helps ensure fully reproducible workflows.
+
+artifact: https://github.com/r-tooling/r4r
+
+paper: https://doi.org/10.1145/3736731.3746156
+doi: 10.1145/3736731.3746156
+
+recordings:
+  - url: https://www.youtube.com/watch?v=rpYARPqeXDg
+    title: useR! 2025 talk
